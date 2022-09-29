@@ -112,6 +112,8 @@ The following relationships are created:
 | `whitehat_account`    | **HAS**               | `whitehat_asset`      |
 | `whitehat_account`    | **HAS**               | `whitehat_scan`       |
 | `whitehat_app_scan`   | **SCANS**             | `whitehat_asset`      |
+| `whitehat_scan`       | **PERFORMED**         | `whitehat_app_scan`   |
+| `whitehat_scan`       | **PERFORMED**         | `whitehat_site_scan`  |
 | `whitehat_site_scan`  | **SCANS**             | `whitehat_asset`      |
 
 <!--

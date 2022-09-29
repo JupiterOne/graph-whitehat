@@ -9,8 +9,8 @@ import {
   Steps,
   Entities,
   ACCOUNT_ENTITY_KEY,
-  SERVICES,
   Relationships,
+  SERVICE_ENTITY_KEY,
 } from '../constants';
 import {
   createAccountServiceRelationship,
@@ -22,21 +22,19 @@ export async function fetchServices({
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
   const accountEntity = (await jobState.getData(ACCOUNT_ENTITY_KEY)) as Entity;
 
-  for (const SERVICE of Object.values(SERVICES)) {
-    const serviceEntity = await jobState.addEntity(
-      createServiceEntity(SERVICE),
-    );
+  const serviceEntity = await jobState.addEntity(createServiceEntity());
 
-    await jobState.addRelationship(
-      createAccountServiceRelationship({ accountEntity, serviceEntity }),
-    );
-  }
+  await jobState.addRelationship(
+    createAccountServiceRelationship({ accountEntity, serviceEntity }),
+  );
+
+  await jobState.setData(SERVICE_ENTITY_KEY, serviceEntity);
 }
 
 export const serviceSteps: IntegrationStep<IntegrationConfig>[] = [
   {
-    id: Steps.SERVICES.id,
-    name: Steps.SERVICES.name,
+    id: Steps.SERVICE.id,
+    name: Steps.SERVICE.name,
     entities: [Entities.SERVICE],
     relationships: [Relationships.ACCOUNT_HAS_SERVICE],
     dependsOn: [Steps.ACCOUNT.id],

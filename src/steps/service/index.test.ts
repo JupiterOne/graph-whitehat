@@ -15,7 +15,7 @@ test('fetch-service', async () => {
     name: 'fetch-service',
   });
 
-  const stepConfig = buildStepTestConfigForStep(Steps.SERVICES.id);
+  const stepConfig = buildStepTestConfigForStep(Steps.SERVICE.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });

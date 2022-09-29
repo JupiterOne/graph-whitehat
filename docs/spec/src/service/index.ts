@@ -7,8 +7,8 @@ export const serviceSpec: StepSpec<IntegrationConfig>[] = [
      * ENDPOINT: https://localhost/api/v1/users
      * PATTERN: Fetch Entities
      */
-    id: 'fetch-services',
-    name: 'Fetch Services',
+    id: 'fetch-service',
+    name: 'Fetch Service',
     entities: [
       {
         resourceName: 'Scan Type',

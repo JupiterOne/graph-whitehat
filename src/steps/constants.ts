@@ -3,29 +3,14 @@ import {
   StepEntityMetadata,
   StepRelationshipMetadata,
 } from '@jupiterone/integration-sdk-core';
-import { WhitehatService } from '../types';
 
 export const ACCOUNT_ENTITY_KEY = 'entity:account';
+export const SERVICE_ENTITY_KEY = 'entity:service';
 
-export const SERVICES: Record<'STATIC' | 'DYNAMIC', WhitehatService> = {
-  STATIC: {
-    _key: `whitehat-scan-static`,
-    category: 'software',
-    displayName: 'STATIC',
-    name: 'STATIC',
-    function: 'Vulnerability scanning',
-  },
-  DYNAMIC: {
-    _key: `whitehat-scan-dynamic`,
-    category: 'software',
-    displayName: 'DYNAMIC',
-    name: 'DYNAMIC',
-    function: 'Vulnerability scanning',
-  },
-};
+export const SCAN_TYPES = ['STATIC', 'DYNAMIC'];
 
 export const Steps: Record<
-  'ACCOUNT' | 'APP_SCANS' | 'ASSETS' | 'SITE_SCAN' | 'SERVICES',
+  'ACCOUNT' | 'APP_SCANS' | 'ASSETS' | 'SITE_SCAN' | 'SERVICE',
   { id: string; name: string }
 > = {
   ACCOUNT: {
@@ -44,9 +29,9 @@ export const Steps: Record<
     id: 'fetch-assets',
     name: 'Fetch Assets',
   },
-  SERVICES: {
-    id: 'fetch-services',
-    name: 'Fetch Services',
+  SERVICE: {
+    id: 'fetch-service',
+    name: 'Fetch Service',
   },
 };
 
@@ -85,7 +70,9 @@ export const Relationships: Record<
   | 'ACCOUNT_HAS_ASSET'
   | 'APP_SCAN_SCANS_ASSET'
   | 'SITE_SCAN_SCANS_ASSET'
-  | 'ACCOUNT_HAS_SERVICE',
+  | 'ACCOUNT_HAS_SERVICE'
+  | 'SERVICE_PERFORMED_APP_SCAN'
+  | 'SERVICE_PERFORMED_SITE_SCAN',
   StepRelationshipMetadata
 > = {
   ACCOUNT_HAS_ASSET: {
@@ -111,5 +98,17 @@ export const Relationships: Record<
     sourceType: Entities.ACCOUNT._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.SERVICE._type,
+  },
+  SERVICE_PERFORMED_APP_SCAN: {
+    _type: 'whitehat_scan_performed_app_scan',
+    sourceType: Entities.SERVICE._type,
+    _class: RelationshipClass.PERFORMED,
+    targetType: Entities.APP_SCAN._type,
+  },
+  SERVICE_PERFORMED_SITE_SCAN: {
+    _type: 'whitehat_scan_performed_site_scan',
+    sourceType: Entities.SERVICE._type,
+    _class: RelationshipClass.PERFORMED,
+    targetType: Entities.SITE_SCAN._type,
   },
 };

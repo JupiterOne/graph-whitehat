@@ -23,8 +23,14 @@ export const scanSpec: StepSpec<IntegrationConfig>[] = [
         _class: RelationshipClass.SCANS,
         targetType: 'whitehat_asset',
       },
+      {
+        _type: 'whitehat_scan_performed_app_scan',
+        sourceType: 'whitehat_scan',
+        _class: RelationshipClass.PERFORMED,
+        targetType: 'whitehat_app_scan',
+      },
     ],
-    dependsOn: ['fetch-assets'],
+    dependsOn: ['fetch-assets', 'fetch-service'],
     implemented: true,
   },
   {
@@ -48,8 +54,14 @@ export const scanSpec: StepSpec<IntegrationConfig>[] = [
         _class: RelationshipClass.SCANS,
         targetType: 'whitehat_asset',
       },
+      {
+        _type: 'whitehat_scan_performed_site_scan',
+        sourceType: 'whitehat_scan',
+        _class: RelationshipClass.PERFORMED,
+        targetType: 'whitehat_site_scan',
+      },
     ],
-    dependsOn: ['fetch-assets'],
+    dependsOn: ['fetch-assets', 'fetch-service'],
     implemented: true,
   },
 ];
