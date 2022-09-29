@@ -68,3 +68,11 @@ export interface WhitehatSiteScan {
   }[];
   href: string;
 }
+
+export interface WhitehatService {
+  _key: string;
+  category: string;
+  displayName: string;
+  name: string;
+  function: string;
+}

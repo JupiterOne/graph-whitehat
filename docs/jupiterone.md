@@ -100,6 +100,7 @@ The following entities are created:
 | Account          | `whitehat_account`   | `Account`       |
 | Application Scan | `whitehat_app_scan`  | `Assessment`    |
 | Asset            | `whitehat_asset`     | `Application`   |
+| Scan Type        | `whitehat_scan`      | `Service`       |
 | Site Scan        | `whitehat_site_scan` | `Assessment`    |
 
 ### Relationships
@@ -109,6 +110,7 @@ The following relationships are created:
 | Source Entity `_type` | Relationship `_class` | Target Entity `_type` |
 | --------------------- | --------------------- | --------------------- |
 | `whitehat_account`    | **HAS**               | `whitehat_asset`      |
+| `whitehat_account`    | **HAS**               | `whitehat_scan`       |
 | `whitehat_app_scan`   | **SCANS**             | `whitehat_asset`      |
 | `whitehat_site_scan`  | **SCANS**             | `whitehat_asset`      |
 

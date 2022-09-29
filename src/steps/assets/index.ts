@@ -6,10 +6,13 @@ import {
 import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
-import { Steps, Entities, Relationships } from '../constants';
+import {
+  Steps,
+  Entities,
+  Relationships,
+  ACCOUNT_ENTITY_KEY,
+} from '../constants';
 import { createAccountAssetRelationship, createAssetEntity } from './converter';
-
-export const ACCOUNT_ENTITY_KEY = 'entity:account';
 
 export async function fetchAssets({
   jobState,
