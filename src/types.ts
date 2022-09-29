@@ -1,78 +1,70 @@
-import {
-  EntityFromIntegration,
-  RelationshipFromIntegration,
-  RelationshipMapping,
-} from "@jupiterone/jupiter-managed-integration-sdk";
-
-export interface WhitehatIntegrationInstanceConfig {
-  whitehatApiKey: string;
+export interface WhitehatUser {
+  id: number;
+  username: string;
+  isAdmin: boolean;
+  privileges: string[];
+  hasJumped: boolean;
+  primaryClient: number;
+  allSitesAdmin: number[];
+  hasAssets: boolean;
 }
 
-export interface AccountEntity extends EntityFromIntegration {
+export interface WhitehatAsset {
+  id: number;
+  subID: number;
   name: string;
+  type: string;
+  location: string[];
+  serviceLevel: string;
+  clientRatingMethod: string;
+  phase: string;
+  status: string;
+  customAssetID: string;
+  tags: string[];
+  scheduleName: string;
+  scheduleTimeZone: string;
+  creationT: number;
+  lang: string;
+  averageLinesScanned: number;
+  lastScanDateT: number;
+  scanStatus: string;
+  isWhiteHatEnabled: boolean;
+  activeUser: boolean;
+  keepUnreachableFindingsOpen: { Bool: boolean; Valid: boolean };
 }
 
-export interface ServiceEntityMap {
-  [scanType: string]: ServiceEntity;
+export interface WhitehatAppScan {
+  id: number;
+  tag: string;
+  filename: string;
+  requestedBy: number;
+  username: string;
+  uploadedOn: string;
+  completedOn: string;
+  applicationSize: number;
+  linesOfCode: number;
+  appID: number;
+  assetID: number;
+  status: string;
+  engineConf: {
+    binary_exclusions: string;
+    binary_inclusions: string;
+    exclude_directories: string;
+    exclude_directories_console: string;
+  };
+  instanceID: number;
 }
 
-export interface ServiceEntity extends EntityFromIntegration {
-  category: string;
-  name: string;
-}
-
-export interface VulnerabilityEntityMap {
-  [id: string]: VulnerabilityEntity;
-}
-
-export interface VulnerabilityEntity extends EntityFromIntegration {
-  id: string;
-  category: string;
-  name: string;
-  scanType: string;
-  createdOn: number;
-}
-
-export interface FindingEntityMap {
-  [vulnerabilityClass: string]: FindingEntity[];
-}
-
-export interface FindingEntity extends EntityFromIntegration {
-  name: string;
-
-  targets: string;
-
-  open: boolean;
-
-  cvss: string;
-  likelihood: number;
-  impact: number;
-  risk: string;
-
-  createdOn: number;
-  foundDate: number;
-  modifiedDate: number;
-  resolvedDate: number | null;
-
-  location: string;
-}
-
-export interface CVEEntityMap {
-  [id: string]: CVEEntity[];
-}
-
-export interface CVEEntity extends EntityFromIntegration {
-  name: string;
-  references: string[];
-}
-
-export type AccountServiceRelationship = RelationshipFromIntegration;
-
-export type ServiceVulnerabilityRelationship = RelationshipFromIntegration;
-
-export type VulnerabilityFindingRelationship = RelationshipFromIntegration;
-
-export interface VulnerabilityCVERelationship
-  extends RelationshipFromIntegration {
-  _mapping: RelationshipMapping;
+export interface WhitehatSiteScan {
+  has_running_scan: number;
+  total: number;
+  slot_id: string;
+  collection: {
+    is_non_auth: number;
+    end_date: string;
+    cred_group_name: string;
+    auth_schema_id: number;
+    scan_instance_id: string;
+  }[];
+  href: string;
 }
