@@ -102,6 +102,7 @@ The following entities are created:
 | Asset            | `whitehat_asset`     | `Application`   |
 | Scan Type        | `whitehat_scan`      | `Service`       |
 | Site Scan        | `whitehat_site_scan` | `Assessment`    |
+| User             | `whitehat_user`      | `User`          |
 
 ### Relationships
 
@@ -111,6 +112,7 @@ The following relationships are created:
 | --------------------- | --------------------- | --------------------- |
 | `whitehat_account`    | **HAS**               | `whitehat_asset`      |
 | `whitehat_account`    | **HAS**               | `whitehat_scan`       |
+| `whitehat_account`    | **HAS**               | `whitehat_user`       |
 | `whitehat_app_scan`   | **SCANS**             | `whitehat_asset`      |
 | `whitehat_scan`       | **PERFORMED**         | `whitehat_app_scan`   |
 | `whitehat_scan`       | **PERFORMED**         | `whitehat_site_scan`  |

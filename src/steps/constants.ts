@@ -10,7 +10,14 @@ export const SERVICE_ENTITY_KEY = 'entity:service';
 export const SCAN_TYPES = ['STATIC', 'DYNAMIC'];
 
 export const Steps: Record<
-  'ACCOUNT' | 'APP_SCANS' | 'ASSETS' | 'SITE_SCAN' | 'SERVICE',
+  | 'ACCOUNT'
+  | 'APP_SCANS'
+  | 'ASSETS'
+  | 'SITE_SCAN'
+  | 'SERVICE'
+  | 'USERS'
+  | 'GROUPS'
+  | 'ROLES',
   { id: string; name: string }
 > = {
   ACCOUNT: {
@@ -33,10 +40,29 @@ export const Steps: Record<
     id: 'fetch-service',
     name: 'Fetch Service',
   },
+  USERS: {
+    id: 'fetch-users',
+    name: 'Fetch Users',
+  },
+  GROUPS: {
+    id: 'fetch-groups',
+    name: 'Fetch Groups',
+  },
+  ROLES: {
+    id: 'fetch-roles',
+    name: 'Fetch Roles',
+  },
 };
 
 export const Entities: Record<
-  'ACCOUNT' | 'APP_SCAN' | 'ASSET' | 'SITE_SCAN' | 'SERVICE',
+  | 'ACCOUNT'
+  | 'APP_SCAN'
+  | 'ASSET'
+  | 'SITE_SCAN'
+  | 'SERVICE'
+  | 'USER'
+  | 'GROUP'
+  | 'ROLE',
   StepEntityMetadata
 > = {
   ACCOUNT: {
@@ -64,6 +90,21 @@ export const Entities: Record<
     _type: 'whitehat_scan',
     _class: ['Service'],
   },
+  USER: {
+    resourceName: 'User',
+    _type: 'whitehat_user',
+    _class: ['User'],
+  },
+  GROUP: {
+    resourceName: 'Group',
+    _type: 'whitehat_group',
+    _class: ['UserGroup'],
+  },
+  ROLE: {
+    resourceName: 'Role',
+    _type: 'whitehat_role',
+    _class: ['AccessRole'],
+  },
 };
 
 export const Relationships: Record<
@@ -71,6 +112,10 @@ export const Relationships: Record<
   | 'APP_SCAN_SCANS_ASSET'
   | 'SITE_SCAN_SCANS_ASSET'
   | 'ACCOUNT_HAS_SERVICE'
+  | 'ACCOUNT_HAS_USER'
+  | 'GROUP_HAS_USER'
+  | 'ACCOUNT_HAS_GROUP'
+  | 'USER_ASSIGNED_ROLE'
   | 'SERVICE_PERFORMED_APP_SCAN'
   | 'SERVICE_PERFORMED_SITE_SCAN',
   StepRelationshipMetadata
@@ -110,5 +155,29 @@ export const Relationships: Record<
     sourceType: Entities.SERVICE._type,
     _class: RelationshipClass.PERFORMED,
     targetType: Entities.SITE_SCAN._type,
+  },
+  ACCOUNT_HAS_USER: {
+    _type: 'whitehat_account_has_user',
+    sourceType: Entities.ACCOUNT._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.USER._type,
+  },
+  GROUP_HAS_USER: {
+    _type: 'whitehat_group_has_user',
+    sourceType: Entities.GROUP._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.USER._type,
+  },
+  ACCOUNT_HAS_GROUP: {
+    _type: 'whitehat_account_has_group',
+    sourceType: Entities.ACCOUNT._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.GROUP._type,
+  },
+  USER_ASSIGNED_ROLE: {
+    _type: 'whitehat_user_assigned_role',
+    sourceType: Entities.USER._type,
+    _class: RelationshipClass.ASSIGNED,
+    targetType: Entities.ROLE._type,
   },
 };

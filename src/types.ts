@@ -1,4 +1,4 @@
-export interface WhitehatUser {
+export interface WhitehatCurrentUser {
   id: number;
   username: string;
   isAdmin: boolean;
@@ -7,6 +7,24 @@ export interface WhitehatUser {
   primaryClient: number;
   allSitesAdmin: number[];
   hasAssets: boolean;
+}
+
+export interface WhitehatUser {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  lastLogin: number;
+  status: string;
+  createdDate: number;
+  createdBy: string;
+  jobTitle: string;
+  mobile: string;
+  phone: string;
+  dataPrivacy: boolean;
+  timezone: string;
+  vulnEmails: boolean;
+  emailFrequency: { daily: boolean; weekly: boolean; monthly: boolean };
 }
 
 export interface WhitehatAsset {

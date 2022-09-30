@@ -12,6 +12,7 @@ import {
   WhitehatAsset,
   WhitehatEventSubscriptionsResponse,
   WhitehatSiteScan,
+  WhitehatCurrentUser,
   WhitehatUser,
 } from './types';
 
@@ -122,7 +123,7 @@ export class APIClient {
     }
   }
 
-  public async getCurrentUser(): Promise<WhitehatUser> {
+  public async getCurrentUser(): Promise<WhitehatCurrentUser> {
     return this.request(this.withBaseUri('/whoami'));
   }
 
@@ -152,6 +153,15 @@ export class APIClient {
   public async getSiteScans(siteId: number): Promise<WhitehatSiteScan> {
     return this.request(
       this.withBaseUri(`/site/${siteId}/last_completed_scans`),
+    );
+  }
+
+  public async iterateUsers(
+    iteratee: ResourceIteratee<WhitehatUser>,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatUser>(
+      this.withBaseUri(`/users`),
+      iteratee,
     );
   }
 }
