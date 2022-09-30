@@ -32,6 +32,45 @@ export interface WhitehatRole {
   name: string;
 }
 
+export interface WhitehatSite {
+  id: number;
+  clientID: number;
+  name: string;
+  organization: string;
+  abbreviation: string;
+  hostname: string;
+  associatedHostname: string;
+  industry: string;
+  weight: number;
+  speed: number;
+  usesSatellite: boolean;
+}
+
+export interface WhitehatApplication {
+  autoremediation: number;
+  files: { extension: string; count: number }[];
+  open_vuln_count: string;
+  vulns_found_by_engine: number;
+  asset_scan_status: string;
+  last_scan_duration: number;
+  status: string;
+  line_of_code: string;
+  client_id: number;
+  has_schedule: number;
+  last_scan_completed: string;
+  percentage_of_lines_sent_to_whitehat: number;
+  label: string;
+  id: number;
+  file_size_scanned: string;
+  language: string;
+  created_t: string;
+  service_level: string;
+  app_full_scan_enabled: number;
+  is_mobile_bla: number;
+  href: string;
+  is_mobile: number;
+}
+
 export interface WhitehatRoleResponse {
   collection: WhitehatRole[];
 }

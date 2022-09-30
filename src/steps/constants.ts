@@ -11,28 +11,22 @@ export const SCAN_TYPES = ['STATIC', 'DYNAMIC'];
 
 export const Steps: Record<
   | 'ACCOUNT'
-  | 'APP_SCANS'
   | 'ASSETS'
-  | 'SITE_SCAN'
   | 'SERVICE'
+  | 'SITES'
+  | 'APPLICATION'
   | 'USERS'
   | 'GROUPS'
   | 'BUILD_USER_ROLE'
   | 'BUILD_USER_GROUP'
-  | 'ROLES',
+  | 'ROLES'
+  | 'APP_SCANS'
+  | 'SITE_SCAN',
   { id: string; name: string }
 > = {
   ACCOUNT: {
     id: 'fetch-account',
     name: 'Fetch Account Details',
-  },
-  APP_SCANS: {
-    id: 'fetch-application-scans',
-    name: 'Fetch Application Scans',
-  },
-  SITE_SCAN: {
-    id: 'fetch-site-scans',
-    name: 'Fetch Site Scans',
   },
   ASSETS: {
     id: 'fetch-assets',
@@ -54,6 +48,14 @@ export const Steps: Record<
     id: 'fetch-roles',
     name: 'Fetch Roles',
   },
+  SITES: {
+    id: 'fetch-sites',
+    name: 'Fetch Sites',
+  },
+  APPLICATION: {
+    id: 'fetch-applications',
+    name: 'Fetch Applications',
+  },
   BUILD_USER_GROUP: {
     id: 'build-user-group-relationship',
     name: 'Build User and Group Relationship',
@@ -62,17 +64,27 @@ export const Steps: Record<
     id: 'build-user-role-relationship',
     name: 'Build User and Role Relationship',
   },
+  APP_SCANS: {
+    id: 'fetch-application-scans',
+    name: 'Fetch Application Scans',
+  },
+  SITE_SCAN: {
+    id: 'fetch-site-scans',
+    name: 'Fetch Site Scans',
+  },
 };
 
 export const Entities: Record<
   | 'ACCOUNT'
-  | 'APP_SCAN'
   | 'ASSET'
-  | 'SITE_SCAN'
+  | 'SITE'
+  | 'APPLICATION'
   | 'SERVICE'
   | 'USER'
+  | 'ROLE'
   | 'GROUP'
-  | 'ROLE',
+  | 'SITE_SCAN'
+  | 'APP_SCAN',
   StepEntityMetadata
 > = {
   ACCOUNT: {
@@ -80,19 +92,19 @@ export const Entities: Record<
     _type: 'whitehat_account',
     _class: ['Account'],
   },
-  APP_SCAN: {
-    resourceName: 'Application Scan',
-    _type: 'whitehat_app_scan',
-    _class: ['Assessment'],
-  },
-  SITE_SCAN: {
-    resourceName: 'Site Scan',
-    _type: 'whitehat_site_scan',
-    _class: ['Assessment'],
-  },
   ASSET: {
     resourceName: 'Asset',
     _type: 'whitehat_asset',
+    _class: ['Application'],
+  },
+  SITE: {
+    resourceName: 'Site',
+    _type: 'web_app_domain',
+    _class: ['Application', 'Host'],
+  },
+  APPLICATION: {
+    resourceName: 'Application and Mobile Application',
+    _type: 'whitehat_application',
     _class: ['Application'],
   },
   SERVICE: {
@@ -115,10 +127,22 @@ export const Entities: Record<
     _type: 'whitehat_role',
     _class: ['AccessRole'],
   },
+  APP_SCAN: {
+    resourceName: 'Application Scan',
+    _type: 'whitehat_app_scan',
+    _class: ['Assessment'],
+  },
+  SITE_SCAN: {
+    resourceName: 'Site Scan',
+    _type: 'whitehat_site_scan',
+    _class: ['Assessment'],
+  },
 };
 
 export const Relationships: Record<
   | 'ACCOUNT_HAS_ASSET'
+  | 'ASSET_HAS_SITE'
+  | 'ASSET_HAS_APPLICATION'
   | 'APP_SCAN_SCANS_ASSET'
   | 'SITE_SCAN_SCANS_ASSET'
   | 'ACCOUNT_HAS_SERVICE'
@@ -135,6 +159,18 @@ export const Relationships: Record<
     sourceType: Entities.ACCOUNT._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.ASSET._type,
+  },
+  ASSET_HAS_SITE: {
+    _type: 'whitehat_asset_has_web_app_domain',
+    sourceType: Entities.ASSET._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.SITE._type,
+  },
+  ASSET_HAS_APPLICATION: {
+    _type: 'whitehat_asset_has_application',
+    sourceType: Entities.ASSET._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.APPLICATION._type,
   },
   APP_SCAN_SCANS_ASSET: {
     _type: 'whitehat_app_scan_scans_asset',

@@ -16,6 +16,8 @@ import {
   WhitehatUser,
   WhitehatGroup,
   WhitehatRoleResponse,
+  WhitehatSite,
+  WhitehatApplication,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -181,6 +183,16 @@ export class APIClient {
 
   public async getRoles(): Promise<WhitehatRoleResponse> {
     return this.request(this.withBaseUri(`/userRoles`));
+  }
+
+  public async getSite(siteId: number): Promise<WhitehatSite> {
+    return this.request(this.withBaseUri(`/v2/sites/${siteId}`));
+  }
+
+  public async getApplication(
+    applicationId: number,
+  ): Promise<WhitehatApplication> {
+    return this.request(this.withBaseUri(`/application/${applicationId}`));
   }
 }
 

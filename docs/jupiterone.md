@@ -77,33 +77,31 @@ https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
 
 The following entities are created:
 
-| Resources        | Entity `_type`       | Entity `_class` |
-| ---------------- | -------------------- | --------------- |
-| Account          | `whitehat_account`   | `Account`       |
-| Application Scan | `whitehat_app_scan`  | `Assessment`    |
-| Asset            | `whitehat_asset`     | `Application`   |
-| Group            | `whitehat_group`     | `UserGroup`     |
-| Role             | `whitehat_role`      | `AccessRole`    |
-| Scan Type        | `whitehat_scan`      | `Service`       |
-| Site Scan        | `whitehat_site_scan` | `Assessment`    |
-| User             | `whitehat_user`      | `User`          |
+| Resources                          | Entity `_type`         | Entity `_class`       |
+| ---------------------------------- | ---------------------- | --------------------- |
+| Account                            | `whitehat_account`     | `Account`             |
+| Application and Mobile Application | `whitehat_application` | `Application`         |
+| Asset                              | `whitehat_asset`       | `Application`         |
+| Group                              | `whitehat_group`       | `UserGroup`           |
+| Role                               | `whitehat_role`        | `AccessRole`          |
+| Scan Type                          | `whitehat_scan`        | `Service`             |
+| Site                               | `web_app_domain`       | `Application`, `Host` |
+| User                               | `whitehat_user`        | `User`                |
 
 ### Relationships
 
 The following relationships are created:
 
-| Source Entity `_type` | Relationship `_class` | Target Entity `_type` |
-| --------------------- | --------------------- | --------------------- |
-| `whitehat_account`    | **HAS**               | `whitehat_asset`      |
-| `whitehat_account`    | **HAS**               | `whitehat_group`      |
-| `whitehat_account`    | **HAS**               | `whitehat_scan`       |
-| `whitehat_account`    | **HAS**               | `whitehat_user`       |
-| `whitehat_app_scan`   | **SCANS**             | `whitehat_asset`      |
-| `whitehat_group`      | **HAS**               | `whitehat_user`       |
-| `whitehat_scan`       | **PERFORMED**         | `whitehat_app_scan`   |
-| `whitehat_scan`       | **PERFORMED**         | `whitehat_site_scan`  |
-| `whitehat_site_scan`  | **SCANS**             | `whitehat_asset`      |
-| `whitehat_user`       | **ASSIGNED**          | `whitehat_role`       |
+| Source Entity `_type` | Relationship `_class` | Target Entity `_type`  |
+| --------------------- | --------------------- | ---------------------- |
+| `whitehat_account`    | **HAS**               | `whitehat_asset`       |
+| `whitehat_account`    | **HAS**               | `whitehat_group`       |
+| `whitehat_account`    | **HAS**               | `whitehat_scan`        |
+| `whitehat_account`    | **HAS**               | `whitehat_user`        |
+| `whitehat_asset`      | **HAS**               | `whitehat_application` |
+| `whitehat_asset`      | **HAS**               | `web_app_domain`       |
+| `whitehat_group`      | **HAS**               | `whitehat_user`        |
+| `whitehat_user`       | **ASSIGNED**          | `whitehat_role`        |
 
 <!--
 ********************************************************************************

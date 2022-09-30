@@ -9,24 +9,13 @@ afterEach(async () => {
   await recording.stop();
 });
 
-test.skip('fetch-application-scans', async () => {
+test('fetch-sites', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
-    name: 'fetch-application-scans',
+    name: 'fetch-sites',
   });
 
-  const stepConfig = buildStepTestConfigForStep(Steps.APP_SCANS.id);
-  const stepResult = await executeStepWithDependencies(stepConfig);
-  expect(stepResult).toMatchStepMetadata(stepConfig);
-});
-
-test.skip('fetch-site-scans', async () => {
-  recording = setupProjectRecording({
-    directory: __dirname,
-    name: 'fetch-site-scans',
-  });
-
-  const stepConfig = buildStepTestConfigForStep(Steps.SITE_SCAN.id);
+  const stepConfig = buildStepTestConfigForStep(Steps.SITES.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
