@@ -68,3 +68,20 @@ export interface WhitehatSiteScan {
   }[];
   href: string;
 }
+
+export interface WhitehatEventSubscriptions {
+  subscriptionGroupType: string;
+  allEventsSubscribed: boolean;
+  subscriptionGroupEvents: {
+    value: number;
+    description: string;
+    subscribed: boolean;
+  }[];
+}
+
+export interface WhitehatEventSubscriptionsResponse {
+  page: {
+    totalCount: number;
+  };
+  collection: WhitehatEventSubscriptions[];
+}

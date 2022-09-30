@@ -10,6 +10,7 @@ import { IntegrationConfig } from './config';
 import {
   WhitehatAppScan,
   WhitehatAsset,
+  WhitehatEventSubscriptionsResponse,
   WhitehatSiteScan,
   WhitehatUser,
 } from './types';
@@ -142,6 +143,10 @@ export class APIClient {
       this.withBaseUri(`/sourceApplications/${appId}/scans`),
       iteratee,
     );
+  }
+
+  public async getEventSubscriptions(): Promise<WhitehatEventSubscriptionsResponse> {
+    return this.request(this.withBaseUri(`/eventSubscriptions`));
   }
 
   public async getSiteScans(siteId: number): Promise<WhitehatSiteScan> {

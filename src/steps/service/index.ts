@@ -3,6 +3,7 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
+import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
 import {
@@ -18,11 +19,17 @@ import {
 } from './converter';
 
 export async function fetchServices({
+  instance,
   jobState,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
+  const apiClient = createAPIClient(instance.config);
   const accountEntity = (await jobState.getData(ACCOUNT_ENTITY_KEY)) as Entity;
 
-  const serviceEntity = await jobState.addEntity(createServiceEntity());
+  const { collection } = await apiClient.getEventSubscriptions();
+
+  const serviceEntity = await jobState.addEntity(
+    createServiceEntity(collection),
+  );
 
   await jobState.addRelationship(
     createAccountServiceRelationship({ accountEntity, serviceEntity }),
