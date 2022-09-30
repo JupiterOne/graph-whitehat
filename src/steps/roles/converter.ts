@@ -1,30 +1,40 @@
 import {
+  createDirectRelationship,
   createIntegrationEntity,
   Entity,
+  Relationship,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
-import { WhitehatCurrentUser } from '../../types';
+import { WhitehatRole } from '../../types';
 
 import { Entities } from '../constants';
 
-export function createAccountEntity(data: WhitehatCurrentUser): Entity {
+export function createRoleEntity(data: WhitehatRole): Entity {
   return createIntegrationEntity({
     entityData: {
       source: data,
       assign: {
-        _key: generateKey(Entities.ACCOUNT._type, data.id),
-        _type: Entities.ACCOUNT._type,
-        _class: Entities.ACCOUNT._class,
+        _key: generateKey(Entities.ROLE._type, data.id),
+        _type: Entities.ROLE._type,
+        _class: Entities.ROLE._class,
         id: data.id.toString(),
-        username: data.username,
-        name: data.username,
-        isAdmin: data.isAdmin,
-        privileges: data.privileges,
-        hasJumped: data.hasJumped,
-        primaryClient: data.primaryClient,
-        allSitesAdmin: data.allSitesAdmin,
-        hasAssets: data.hasAssets,
+        name: data.name,
       },
     },
+  });
+}
+
+export function createRoleUserRelationship({
+  userEntity,
+  roleEntity,
+}: {
+  userEntity: Entity;
+  roleEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.ASSIGNED,
+    from: userEntity,
+    to: roleEntity,
   });
 }

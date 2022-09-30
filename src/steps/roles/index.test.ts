@@ -19,3 +19,14 @@ test('fetch-account', async () => {
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
+
+test('build-role-user-relationship', async () => {
+  recording = setupProjectRecording({
+    directory: __dirname,
+    name: 'build-role-user-relationship',
+  });
+
+  const stepConfig = buildStepTestConfigForStep(Steps.BUILD_USER_ROLE.id);
+  const stepResult = await executeStepWithDependencies(stepConfig);
+  expect(stepResult).toMatchStepMetadata(stepConfig);
+});

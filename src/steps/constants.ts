@@ -17,6 +17,8 @@ export const Steps: Record<
   | 'SERVICE'
   | 'USERS'
   | 'GROUPS'
+  | 'BUILD_USER_ROLE'
+  | 'BUILD_USER_GROUP'
   | 'ROLES',
   { id: string; name: string }
 > = {
@@ -51,6 +53,14 @@ export const Steps: Record<
   ROLES: {
     id: 'fetch-roles',
     name: 'Fetch Roles',
+  },
+  BUILD_USER_GROUP: {
+    id: 'build-user-group-relationship',
+    name: 'Build User and Group Relationship',
+  },
+  BUILD_USER_ROLE: {
+    id: 'build-user-role-relationship',
+    name: 'Build User and Role Relationship',
   },
 };
 

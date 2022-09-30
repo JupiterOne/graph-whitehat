@@ -27,6 +27,15 @@ export interface WhitehatUser {
   emailFrequency: { daily: boolean; weekly: boolean; monthly: boolean };
 }
 
+export interface WhitehatRole {
+  id: number;
+  name: string;
+}
+
+export interface WhitehatRoleResponse {
+  collection: WhitehatRole[];
+}
+
 export interface WhitehatAsset {
   id: number;
   subID: number;
@@ -49,6 +58,13 @@ export interface WhitehatAsset {
   isWhiteHatEnabled: boolean;
   activeUser: boolean;
   keepUnreachableFindingsOpen: { Bool: boolean; Valid: boolean };
+}
+
+export interface WhitehatGroup {
+  id: number;
+  name: string;
+  description: string;
+  created: number;
 }
 
 export interface WhitehatAppScan {

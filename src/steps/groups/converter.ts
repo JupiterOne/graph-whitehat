@@ -1,30 +1,56 @@
 import {
+  createDirectRelationship,
   createIntegrationEntity,
   Entity,
+  Relationship,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
-import { WhitehatCurrentUser } from '../../types';
+import { WhitehatGroup } from '../../types';
 
 import { Entities } from '../constants';
 
-export function createAccountEntity(data: WhitehatCurrentUser): Entity {
+export function createGroupEntity(data: WhitehatGroup): Entity {
   return createIntegrationEntity({
     entityData: {
       source: data,
       assign: {
-        _key: generateKey(Entities.ACCOUNT._type, data.id),
-        _type: Entities.ACCOUNT._type,
-        _class: Entities.ACCOUNT._class,
+        _key: generateKey(Entities.GROUP._type, data.id),
+        _type: Entities.GROUP._type,
+        _class: Entities.GROUP._class,
         id: data.id.toString(),
-        username: data.username,
-        name: data.username,
-        isAdmin: data.isAdmin,
-        privileges: data.privileges,
-        hasJumped: data.hasJumped,
-        primaryClient: data.primaryClient,
-        allSitesAdmin: data.allSitesAdmin,
-        hasAssets: data.hasAssets,
+        name: data.name,
+        description: data.description,
+        createdOn: data.created,
       },
     },
+  });
+}
+
+export function createGroupAccountRelationship({
+  accountEntity,
+  groupEntity,
+}: {
+  accountEntity: Entity;
+  groupEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.HAS,
+    from: accountEntity,
+    to: groupEntity,
+  });
+}
+
+export function createGroupUserRelationship({
+  userEntity,
+  groupEntity,
+}: {
+  userEntity: Entity;
+  groupEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.HAS,
+    from: groupEntity,
+    to: userEntity,
   });
 }

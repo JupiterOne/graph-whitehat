@@ -9,13 +9,24 @@ afterEach(async () => {
   await recording.stop();
 });
 
-test('fetch-account', async () => {
+test('fetch-groups', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
-    name: 'fetch-account',
+    name: 'fetch-groups',
   });
 
-  const stepConfig = buildStepTestConfigForStep(Steps.ACCOUNT.id);
+  const stepConfig = buildStepTestConfigForStep(Steps.GROUPS.id);
+  const stepResult = await executeStepWithDependencies(stepConfig);
+  expect(stepResult).toMatchStepMetadata(stepConfig);
+});
+
+test('build-user-group-relationship', async () => {
+  recording = setupProjectRecording({
+    directory: __dirname,
+    name: 'build-user-group-relationship',
+  });
+
+  const stepConfig = buildStepTestConfigForStep(Steps.BUILD_USER_GROUP.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });

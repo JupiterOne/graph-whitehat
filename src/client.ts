@@ -14,6 +14,8 @@ import {
   WhitehatSiteScan,
   WhitehatCurrentUser,
   WhitehatUser,
+  WhitehatGroup,
+  WhitehatRoleResponse,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -85,6 +87,7 @@ export class APIClient {
   private async paginatedRequest<T>(
     uri: string,
     iteratee: ResourceIteratee<T>,
+    query?: string,
     method?: 'GET',
   ): Promise<void> {
     try {
@@ -92,7 +95,7 @@ export class APIClient {
       let response: Response;
       do {
         response = await this.request(
-          `${uri}?limit=${this.limit}&offset=${offset}`,
+          `${uri}?limit=${this.limit}&offset=${offset}${query ? query : ''}`,
           method,
         );
 
@@ -158,11 +161,26 @@ export class APIClient {
 
   public async iterateUsers(
     iteratee: ResourceIteratee<WhitehatUser>,
+    query?: string,
   ): Promise<void> {
     return this.paginatedRequest<WhitehatUser>(
       this.withBaseUri(`/users`),
       iteratee,
+      query,
     );
+  }
+
+  public async iterateGroups(
+    iteratee: ResourceIteratee<WhitehatGroup>,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatGroup>(
+      this.withBaseUri(`/groups`),
+      iteratee,
+    );
+  }
+
+  public async getRoles(): Promise<WhitehatRoleResponse> {
+    return this.request(this.withBaseUri(`/userRoles`));
   }
 }
 
