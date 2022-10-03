@@ -66,7 +66,7 @@ export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
       Relationships.APPLICATION_HAS_FINDING,
       Relationships.SITE_HAS_FINDING,
     ],
-    dependsOn: [Steps.APPLICATION.id],
+    dependsOn: [Steps.APPLICATION.id, Steps.SITES.id],
     executionHandler: fetchFindings,
   },
 ];
