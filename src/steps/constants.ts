@@ -7,8 +7,6 @@ import {
 export const ACCOUNT_ENTITY_KEY = 'entity:account';
 export const SERVICE_ENTITY_KEY = 'entity:service';
 
-export const SCAN_TYPES = ['STATIC', 'DYNAMIC'];
-
 export const Steps: Record<
   | 'ACCOUNT'
   | 'ASSETS'
@@ -20,8 +18,8 @@ export const Steps: Record<
   | 'BUILD_USER_ROLE'
   | 'BUILD_USER_GROUP'
   | 'ROLES'
-  | 'APP_SCANS'
-  | 'SITE_SCAN',
+  | 'APP_ASSESSMENTS'
+  | 'SITE_ASSESSMENTS',
   { id: string; name: string }
 > = {
   ACCOUNT: {
@@ -64,13 +62,13 @@ export const Steps: Record<
     id: 'build-user-role-relationship',
     name: 'Build User and Role Relationship',
   },
-  APP_SCANS: {
-    id: 'fetch-application-scans',
-    name: 'Fetch Application Scans',
+  APP_ASSESSMENTS: {
+    id: 'fetch-application-assessments',
+    name: 'Fetch Application Assessments',
   },
-  SITE_SCAN: {
-    id: 'fetch-site-scans',
-    name: 'Fetch Site Scans',
+  SITE_ASSESSMENTS: {
+    id: 'fetch-site-assessments',
+    name: 'Fetch Site Assessments',
   },
 };
 
@@ -83,8 +81,7 @@ export const Entities: Record<
   | 'USER'
   | 'ROLE'
   | 'GROUP'
-  | 'SITE_SCAN'
-  | 'APP_SCAN',
+  | 'ASSESSMENT',
   StepEntityMetadata
 > = {
   ACCOUNT: {
@@ -127,14 +124,9 @@ export const Entities: Record<
     _type: 'whitehat_role',
     _class: ['AccessRole'],
   },
-  APP_SCAN: {
-    resourceName: 'Application Scan',
-    _type: 'whitehat_app_scan',
-    _class: ['Assessment'],
-  },
-  SITE_SCAN: {
-    resourceName: 'Site Scan',
-    _type: 'whitehat_site_scan',
+  ASSESSMENT: {
+    resourceName: 'Assessment',
+    _type: 'whitehat_assessment',
     _class: ['Assessment'],
   },
 };
@@ -143,15 +135,14 @@ export const Relationships: Record<
   | 'ACCOUNT_HAS_ASSET'
   | 'ASSET_HAS_SITE'
   | 'ASSET_HAS_APPLICATION'
-  | 'APP_SCAN_SCANS_ASSET'
-  | 'SITE_SCAN_SCANS_ASSET'
+  | 'APPLICATION_HAS_ASSESSMENT'
+  | 'SITE_HAS_ASSESSMENT'
   | 'ACCOUNT_HAS_SERVICE'
   | 'ACCOUNT_HAS_USER'
   | 'GROUP_HAS_USER'
   | 'ACCOUNT_HAS_GROUP'
   | 'USER_ASSIGNED_ROLE'
-  | 'SERVICE_PERFORMED_APP_SCAN'
-  | 'SERVICE_PERFORMED_SITE_SCAN',
+  | 'SERVICE_PERFORMED_ASSESSMENT',
   StepRelationshipMetadata
 > = {
   ACCOUNT_HAS_ASSET: {
@@ -172,17 +163,17 @@ export const Relationships: Record<
     _class: RelationshipClass.HAS,
     targetType: Entities.APPLICATION._type,
   },
-  APP_SCAN_SCANS_ASSET: {
-    _type: 'whitehat_app_scan_scans_asset',
-    sourceType: Entities.APP_SCAN._type,
-    _class: RelationshipClass.SCANS,
-    targetType: Entities.ASSET._type,
+  SITE_HAS_ASSESSMENT: {
+    _type: 'web_app_domain_has_whitehat_assessment',
+    sourceType: Entities.SITE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.ASSESSMENT._type,
   },
-  SITE_SCAN_SCANS_ASSET: {
-    _type: 'whitehat_site_scan_scans_asset',
-    sourceType: Entities.SITE_SCAN._type,
-    _class: RelationshipClass.SCANS,
-    targetType: Entities.ASSET._type,
+  APPLICATION_HAS_ASSESSMENT: {
+    _type: 'whitehat_application_has_assessment',
+    sourceType: Entities.APPLICATION._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.ASSESSMENT._type,
   },
   ACCOUNT_HAS_SERVICE: {
     _type: 'whitehat_account_has_scan',
@@ -190,17 +181,11 @@ export const Relationships: Record<
     _class: RelationshipClass.HAS,
     targetType: Entities.SERVICE._type,
   },
-  SERVICE_PERFORMED_APP_SCAN: {
-    _type: 'whitehat_scan_performed_app_scan',
+  SERVICE_PERFORMED_ASSESSMENT: {
+    _type: 'whitehat_scan_performed_assessment',
     sourceType: Entities.SERVICE._type,
     _class: RelationshipClass.PERFORMED,
-    targetType: Entities.APP_SCAN._type,
-  },
-  SERVICE_PERFORMED_SITE_SCAN: {
-    _type: 'whitehat_scan_performed_site_scan',
-    sourceType: Entities.SERVICE._type,
-    _class: RelationshipClass.PERFORMED,
-    targetType: Entities.SITE_SCAN._type,
+    targetType: Entities.ASSESSMENT._type,
   },
   ACCOUNT_HAS_USER: {
     _type: 'whitehat_account_has_user',

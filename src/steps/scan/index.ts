@@ -7,7 +7,7 @@ import {
 import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
-import { WhitehatAsset } from '../../types';
+import { WhitehatApplication, WhitehatSite } from '../../types';
 import {
   Steps,
   Entities,
@@ -15,14 +15,14 @@ import {
   SERVICE_ENTITY_KEY,
 } from '../constants';
 import {
-  createApplicationScanEntities,
-  createAppScansAssetRelationships,
-  createServiceScansRelationships,
-  createSiteScansAssetRelationships,
-  createSiteScanEntities,
+  createApplicationScanEntity,
+  createServiceScansRelationship,
+  createAssessmentApplicationRelationship,
+  createSiteScanEntity,
+  createAssessmentSiteRelationship,
 } from './converter';
 
-export async function fetchAppScans({
+export async function fetchApplicationAssessments({
   jobState,
   instance,
   logger,
@@ -31,41 +31,41 @@ export async function fetchAppScans({
   const serviceEntity = (await jobState.getData(SERVICE_ENTITY_KEY)) as Entity;
 
   await jobState.iterateEntities(
-    { _type: Entities.ASSET._type },
-    async (assetEntity) => {
-      const asset = getRawData<WhitehatAsset>(assetEntity);
+    { _type: Entities.APPLICATION._type },
+    async (applicationEntity) => {
+      const application = getRawData<WhitehatApplication>(applicationEntity);
 
-      if (!asset) {
-        logger.warn(`Can not get raw data for entity: ${assetEntity._key}`);
+      if (!application) {
+        logger.warn(
+          `Can not get raw data for entity: ${applicationEntity._key}`,
+        );
         return;
       }
 
-      if (asset.type === 'application') {
-        await apiClient.iterateApplicationScans(
-          asset.subID,
-          async (appScan) => {
-            const appScanEntities = await jobState.addEntities(
-              createApplicationScanEntities(appScan),
-            );
+      await apiClient.iterateApplicationScans(
+        application.id,
+        async (appScan) => {
+          const scanEntity = await jobState.addEntity(
+            createApplicationScanEntity(appScan),
+          );
 
-            await jobState.addRelationships([
-              ...createAppScansAssetRelationships({
-                appScanEntities,
-                assetEntity,
-              }),
-              ...createServiceScansRelationships({
-                scanEntities: appScanEntities,
-                serviceEntity,
-              }),
-            ]);
-          },
-        );
-      }
+          await jobState.addRelationships([
+            createAssessmentApplicationRelationship({
+              scanEntity,
+              applicationEntity,
+            }),
+            createServiceScansRelationship({
+              scanEntity,
+              serviceEntity,
+            }),
+          ]);
+        },
+      );
     },
   );
 }
 
-export async function fetchSiteScans({
+export async function fetchSiteAssessments({
   jobState,
   instance,
   logger,
@@ -74,33 +74,31 @@ export async function fetchSiteScans({
   const serviceEntity = (await jobState.getData(SERVICE_ENTITY_KEY)) as Entity;
 
   await jobState.iterateEntities(
-    { _type: Entities.ASSET._type },
-    async (assetEntity) => {
-      const asset = getRawData<WhitehatAsset>(assetEntity);
+    { _type: Entities.SITE._type },
+    async (siteEntity) => {
+      const site = getRawData<WhitehatSite>(siteEntity);
 
-      if (!asset) {
-        logger.warn(`Can not get raw data for entity: ${assetEntity._key}`);
+      if (!site) {
+        logger.warn(`Can not get raw data for entity: ${siteEntity._key}`);
         return;
       }
 
-      if (asset.type === 'site') {
-        const siteScan = await apiClient.getSiteScans(asset.subID);
-        if (siteScan) {
-          const siteScanEntities = await jobState.addEntities(
-            createSiteScanEntities(siteScan),
-          );
+      const siteScans = await apiClient.getSiteScans(site.id);
+      if (siteScans) {
+        const scanEntity = await jobState.addEntity(
+          createSiteScanEntity(siteScans),
+        );
 
-          await jobState.addRelationships([
-            ...createSiteScansAssetRelationships({
-              siteScanEntities,
-              assetEntity,
-            }),
-            ...createServiceScansRelationships({
-              scanEntities: siteScanEntities,
-              serviceEntity,
-            }),
-          ]);
-        }
+        await jobState.addRelationships([
+          createAssessmentSiteRelationship({
+            scanEntity,
+            siteEntity,
+          }),
+          createServiceScansRelationship({
+            scanEntity,
+            serviceEntity,
+          }),
+        ]);
       }
     },
   );
@@ -108,25 +106,25 @@ export async function fetchSiteScans({
 
 export const scanSteps: IntegrationStep<IntegrationConfig>[] = [
   {
-    id: Steps.APP_SCANS.id,
-    name: Steps.APP_SCANS.name,
-    entities: [Entities.APP_SCAN],
+    id: Steps.APP_ASSESSMENTS.id,
+    name: Steps.APP_ASSESSMENTS.name,
+    entities: [Entities.ASSESSMENT],
     relationships: [
-      Relationships.APP_SCAN_SCANS_ASSET,
-      Relationships.SERVICE_PERFORMED_APP_SCAN,
+      Relationships.SERVICE_PERFORMED_ASSESSMENT,
+      Relationships.APPLICATION_HAS_ASSESSMENT,
     ],
-    dependsOn: [Steps.ASSETS.id, Steps.SERVICE.id],
-    executionHandler: fetchAppScans,
+    dependsOn: [Steps.APPLICATION.id, Steps.SERVICE.id],
+    executionHandler: fetchApplicationAssessments,
   },
   {
-    id: Steps.SITE_SCAN.id,
-    name: Steps.SITE_SCAN.name,
-    entities: [Entities.SITE_SCAN],
+    id: Steps.SITE_ASSESSMENTS.id,
+    name: Steps.SITE_ASSESSMENTS.name,
+    entities: [Entities.ASSESSMENT],
     relationships: [
-      Relationships.SITE_SCAN_SCANS_ASSET,
-      Relationships.SERVICE_PERFORMED_SITE_SCAN,
+      Relationships.SERVICE_PERFORMED_ASSESSMENT,
+      Relationships.SITE_HAS_ASSESSMENT,
     ],
-    dependsOn: [Steps.ASSETS.id, Steps.SERVICE.id],
-    executionHandler: fetchSiteScans,
+    dependsOn: [Steps.SITES.id, Steps.SERVICE.id],
+    executionHandler: fetchSiteAssessments,
   },
 ];

@@ -9,24 +9,24 @@ afterEach(async () => {
   await recording.stop();
 });
 
-test.skip('fetch-application-scans', async () => {
+test.skip('fetch-application-assessments', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
-    name: 'fetch-application-scans',
+    name: 'fetch-application-assessments',
   });
 
-  const stepConfig = buildStepTestConfigForStep(Steps.APP_SCANS.id);
+  const stepConfig = buildStepTestConfigForStep(Steps.APP_ASSESSMENTS.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
 
-test.skip('fetch-site-scans', async () => {
+test.skip('fetch-site-assessments', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
-    name: 'fetch-site-scans',
+    name: 'fetch-site-assessments',
   });
 
-  const stepConfig = buildStepTestConfigForStep(Steps.SITE_SCAN.id);
+  const stepConfig = buildStepTestConfigForStep(Steps.SITE_ASSESSMENTS.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
