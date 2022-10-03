@@ -19,6 +19,7 @@ export const Steps: Record<
   | 'BUILD_USER_GROUP'
   | 'ROLES'
   | 'APP_ASSESSMENTS'
+  | 'FINDINGS'
   | 'SITE_ASSESSMENTS',
   { id: string; name: string }
 > = {
@@ -70,6 +71,10 @@ export const Steps: Record<
     id: 'fetch-site-assessments',
     name: 'Fetch Site Assessments',
   },
+  FINDINGS: {
+    id: 'fetch-findings',
+    name: 'Fetch Findings',
+  },
 };
 
 export const Entities: Record<
@@ -80,6 +85,7 @@ export const Entities: Record<
   | 'SERVICE'
   | 'USER'
   | 'ROLE'
+  | 'FINDING'
   | 'GROUP'
   | 'ASSESSMENT',
   StepEntityMetadata
@@ -129,6 +135,11 @@ export const Entities: Record<
     _type: 'whitehat_assessment',
     _class: ['Assessment'],
   },
+  FINDING: {
+    resourceName: 'Finding',
+    _type: 'whitehat_finding',
+    _class: ['Finding'],
+  },
 };
 
 export const Relationships: Record<
@@ -136,12 +147,15 @@ export const Relationships: Record<
   | 'ASSET_HAS_SITE'
   | 'ASSET_HAS_APPLICATION'
   | 'APPLICATION_HAS_ASSESSMENT'
+  | 'APPLICATION_HAS_FINDING'
+  | 'SITE_HAS_FINDING'
   | 'SITE_HAS_ASSESSMENT'
   | 'ACCOUNT_HAS_SERVICE'
   | 'ACCOUNT_HAS_USER'
   | 'GROUP_HAS_USER'
   | 'ACCOUNT_HAS_GROUP'
   | 'USER_ASSIGNED_ROLE'
+  | 'ASSESSMENT_IDENTIFIED_FINDING'
   | 'SERVICE_PERFORMED_ASSESSMENT',
   StepRelationshipMetadata
 > = {
@@ -210,5 +224,23 @@ export const Relationships: Record<
     sourceType: Entities.USER._type,
     _class: RelationshipClass.ASSIGNED,
     targetType: Entities.ROLE._type,
+  },
+  ASSESSMENT_IDENTIFIED_FINDING: {
+    _type: 'whitehat_assessment_identified_finding',
+    sourceType: Entities.ASSESSMENT._type,
+    _class: RelationshipClass.IDENTIFIED,
+    targetType: Entities.FINDING._type,
+  },
+  APPLICATION_HAS_FINDING: {
+    _type: 'whitehat_application_has_finding',
+    sourceType: Entities.APPLICATION._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.FINDING._type,
+  },
+  SITE_HAS_FINDING: {
+    _type: 'web_app_domain_has_whitehat_finding',
+    sourceType: Entities.SITE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.FINDING._type,
   },
 };

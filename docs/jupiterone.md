@@ -83,6 +83,7 @@ The following entities are created:
 | Application and Mobile Application | `whitehat_application` | `Application`         |
 | Assessment                         | `whitehat_assessment`  | `Assessment`          |
 | Asset                              | `whitehat_asset`       | `Application`         |
+| Finding                            | `whitehat_finding`     | `Finding`             |
 | Group                              | `whitehat_group`       | `UserGroup`           |
 | Role                               | `whitehat_role`        | `AccessRole`          |
 | Scan Type                          | `whitehat_scan`        | `Service`             |
@@ -96,11 +97,13 @@ The following relationships are created:
 | Source Entity `_type`  | Relationship `_class` | Target Entity `_type`  |
 | ---------------------- | --------------------- | ---------------------- |
 | `web_app_domain`       | **HAS**               | `whitehat_assessment`  |
+| `web_app_domain`       | **HAS**               | `whitehat_finding`     |
 | `whitehat_account`     | **HAS**               | `whitehat_asset`       |
 | `whitehat_account`     | **HAS**               | `whitehat_group`       |
 | `whitehat_account`     | **HAS**               | `whitehat_scan`        |
 | `whitehat_account`     | **HAS**               | `whitehat_user`        |
 | `whitehat_application` | **HAS**               | `whitehat_assessment`  |
+| `whitehat_application` | **HAS**               | `whitehat_finding`     |
 | `whitehat_asset`       | **HAS**               | `whitehat_application` |
 | `whitehat_asset`       | **HAS**               | `web_app_domain`       |
 | `whitehat_group`       | **HAS**               | `whitehat_user`        |

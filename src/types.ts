@@ -158,3 +158,61 @@ export interface WhitehatEventSubscriptionsResponse {
   };
   collection: WhitehatEventSubscriptions[];
 }
+export interface WhitehatFinding {
+  id: number;
+  asset: {
+    id: number;
+    name: string;
+    type: string;
+    rating: string;
+    serviceLevel: number;
+    subID: number;
+    clientID: number;
+    status: boolean;
+    customPolicyID: number;
+  };
+  class: {
+    id: number;
+    name: string;
+    shortName: string;
+    defaultRisk: number;
+    retired: boolean;
+    hasApplications: boolean;
+    hasSites: boolean;
+  };
+  location: string;
+  foundRevision: string;
+  status: string;
+  nonAcceptedStatus: string;
+  severity: number;
+  threat: number;
+  impact: number;
+  impactRating: string;
+  likelihood: number;
+  likelihoodRating: string;
+  risk: number;
+  customRisk: number;
+  customAccepted: boolean;
+  reason: string;
+  hasInstanceLevelCustomization: boolean;
+  hasInstanceLevelCVSSCustomization: boolean;
+  lastRetested: number;
+  retestStatus: string;
+  firstOpened: string;
+  opened: string;
+  closed: number;
+  lastModified: string;
+  tags: string[];
+  zeroDayTags: string[];
+  cveTags: string[];
+  subTypeTags: string[];
+  directRemediationAvailable: boolean;
+  unreachable: boolean;
+  attackVectorsCount: number;
+  notesCount: number;
+  isAccessible: boolean;
+  outOfScopeReasons: string[];
+  attackVectors: number[];
+  verificationStatus: string;
+  manual: boolean;
+}

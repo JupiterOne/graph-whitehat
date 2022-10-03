@@ -18,6 +18,7 @@ import {
   WhitehatRoleResponse,
   WhitehatSite,
   WhitehatApplication,
+  WhitehatFinding,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -95,6 +96,7 @@ export class APIClient {
     try {
       let offset = 0;
       let response: Response;
+      let count = 0;
       do {
         response = await this.request(
           `${uri}?limit=${this.limit}&offset=${offset}${query ? query : ''}`,
@@ -103,7 +105,12 @@ export class APIClient {
 
         for (const resource of response.collection) await iteratee(resource);
         offset += this.limit;
-      } while (response.page.totalCount > offset);
+
+        count =
+          (query && response.page.filteredCount) !== undefined
+            ? response.page.filteredCount
+            : response.page.totalCount;
+      } while (count > offset);
     } catch (err) {
       throw new IntegrationProviderAPIError({
         cause: new Error(err.message),
@@ -178,6 +185,17 @@ export class APIClient {
     return this.paginatedRequest<WhitehatGroup>(
       this.withBaseUri(`/groups`),
       iteratee,
+    );
+  }
+
+  public async iterateFindings(
+    iteratee: ResourceIteratee<WhitehatFinding>,
+    query?: string,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatFinding>(
+      this.withBaseUri(`/findings`),
+      iteratee,
+      query,
     );
   }
 
