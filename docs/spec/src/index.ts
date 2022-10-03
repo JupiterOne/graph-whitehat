@@ -10,6 +10,7 @@ import { groupSpec } from './groups';
 import { roleSpec } from './roles';
 import { siteSpec } from './sites';
 import { applicationSpec } from './application';
+import { findingSpec } from './findings';
 
 export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
   integrationSteps: [
@@ -22,5 +23,6 @@ export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
     ...roleSpec,
     ...siteSpec,
     ...applicationSpec,
+    ...findingSpec,
   ],
 };
