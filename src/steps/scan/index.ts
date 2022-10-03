@@ -86,7 +86,7 @@ export async function fetchSiteAssessments({
       const siteScans = await apiClient.getSiteScans(site.id);
       if (siteScans) {
         const scanEntity = await jobState.addEntity(
-          createSiteScanEntity(siteScans),
+          createSiteScanEntity(siteScans, site.id),
         );
 
         await jobState.addRelationships([

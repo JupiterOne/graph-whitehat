@@ -16,7 +16,7 @@ export function createApplicationScanEntity(data: WhitehatAppScan): Entity {
     entityData: {
       source: data,
       assign: {
-        _key: generateKey(Entities.ASSESSMENT._type, `${data.id}`),
+        _key: generateKey(Entities.ASSESSMENT._type, `${data.appID}`),
         _type: Entities.ASSESSMENT._type,
         _class: Entities.ASSESSMENT._class,
         id: data.id.toString(),
@@ -47,7 +47,10 @@ export function createApplicationScanEntity(data: WhitehatAppScan): Entity {
   });
 }
 
-export function createSiteScanEntity(data: WhitehatSiteScan): Entity {
+export function createSiteScanEntity(
+  data: WhitehatSiteScan,
+  siteId: number,
+): Entity {
   const { scanInstanceIds, authSchemaIds, endedOnList } =
     data.collection.reduce<{
       scanInstanceIds: string[];
@@ -68,7 +71,7 @@ export function createSiteScanEntity(data: WhitehatSiteScan): Entity {
     entityData: {
       source: data,
       assign: {
-        _key: generateKey(Entities.ASSESSMENT._type, `${data.slot_id}`),
+        _key: generateKey(Entities.ASSESSMENT._type, `${siteId}`),
         _type: Entities.ASSESSMENT._type,
         _class: Entities.ASSESSMENT._class,
         id: data.slot_id,

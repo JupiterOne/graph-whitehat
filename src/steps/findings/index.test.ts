@@ -18,4 +18,4 @@ test('fetch-findings', async () => {
   const stepConfig = buildStepTestConfigForStep(Steps.FINDINGS.id);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
-}, 500000);
+});
