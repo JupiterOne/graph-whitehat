@@ -1,5 +1,6 @@
 import {
   createDirectRelationship,
+  getRawData,
   IntegrationStep,
   IntegrationStepExecutionContext,
   RelationshipClass,
@@ -8,6 +9,7 @@ import generateKey from '../../../utils/generateKey';
 import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
+import { WhitehatFinding } from '../../types';
 import { Steps, Entities, Relationships } from '../constants';
 import { createFindingEntity } from './converter';
 
@@ -57,6 +59,37 @@ export async function fetchFindings({
   });
 }
 
+export async function buildFindingScanRelationship({
+  jobState,
+  logger,
+}: IntegrationStepExecutionContext<IntegrationConfig>) {
+  await jobState.iterateEntities(
+    { _type: Entities.FINDING._type },
+    async (findingEntity) => {
+      const finding = getRawData<WhitehatFinding>(findingEntity);
+
+      if (!finding) {
+        logger.warn(`Can not get raw data for entity ${findingEntity._key}`);
+      } else {
+        const scanEntity = await jobState.findEntity(
+          generateKey(Entities.ASSESSMENT._type, finding.asset.subID),
+        );
+
+        if (scanEntity) {
+          const findingScanRelationship = createDirectRelationship({
+            _class: RelationshipClass.IDENTIFIED,
+            from: scanEntity,
+            to: findingEntity,
+          });
+
+          if (!(await jobState.hasKey(findingScanRelationship._key)))
+            await jobState.addRelationship(findingScanRelationship);
+        }
+      }
+    },
+  );
+}
+
 export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
   {
     id: Steps.FINDINGS.id,
@@ -68,5 +101,17 @@ export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
     ],
     dependsOn: [Steps.APPLICATION.id, Steps.SITES.id],
     executionHandler: fetchFindings,
+  },
+  {
+    id: Steps.BUILD_FINDING_SCAN.id,
+    name: Steps.BUILD_FINDING_SCAN.name,
+    entities: [],
+    relationships: [Relationships.ASSESSMENT_IDENTIFIED_FINDING],
+    dependsOn: [
+      Steps.FINDINGS.id,
+      Steps.APP_ASSESSMENTS.id,
+      Steps.SITE_ASSESSMENTS.id,
+    ],
+    executionHandler: buildFindingScanRelationship,
   },
 ];

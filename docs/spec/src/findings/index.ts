@@ -33,4 +33,27 @@ export const findingSpec: StepSpec<IntegrationConfig>[] = [
     dependsOn: ['fetch-applications', 'fetch-sites'],
     implemented: true,
   },
+  {
+    /**
+     * ENDPOINT: n/a
+     * PATTERN: Singleton
+     */
+    id: 'build-finding-scan-relationship',
+    name: 'Build Findings and Scan Relationship',
+    entities: [],
+    relationships: [
+      {
+        _type: 'whitehat_assessment_identified_finding',
+        sourceType: 'whitehat_assessment',
+        _class: RelationshipClass.IDENTIFIED,
+        targetType: 'whitehat_finding',
+      },
+    ],
+    dependsOn: [
+      'fetch-findings',
+      'fetch-application-assessments',
+      'fetch-site-assessments',
+    ],
+    implemented: true,
+  },
 ];

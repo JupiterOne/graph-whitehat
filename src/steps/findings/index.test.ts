@@ -19,3 +19,14 @@ test('fetch-findings', async () => {
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
+
+test('build-finding-scan-relationship', async () => {
+  recording = setupProjectRecording({
+    directory: __dirname,
+    name: 'build-finding-scan-relationship',
+  });
+
+  const stepConfig = buildStepTestConfigForStep(Steps.BUILD_FINDING_SCAN.id);
+  const stepResult = await executeStepWithDependencies(stepConfig);
+  expect(stepResult).toMatchStepMetadata(stepConfig);
+});

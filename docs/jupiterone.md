@@ -104,6 +104,7 @@ The following relationships are created:
 | `whitehat_account`     | **HAS**               | `whitehat_user`        |
 | `whitehat_application` | **HAS**               | `whitehat_assessment`  |
 | `whitehat_application` | **HAS**               | `whitehat_finding`     |
+| `whitehat_assessment`  | **IDENTIFIED**        | `whitehat_finding`     |
 | `whitehat_asset`       | **HAS**               | `whitehat_application` |
 | `whitehat_asset`       | **HAS**               | `web_app_domain`       |
 | `whitehat_group`       | **HAS**               | `whitehat_user`        |

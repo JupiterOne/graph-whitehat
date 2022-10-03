@@ -18,6 +18,7 @@ export const Steps: Record<
   | 'BUILD_USER_ROLE'
   | 'BUILD_USER_GROUP'
   | 'ROLES'
+  | 'BUILD_FINDING_SCAN'
   | 'APP_ASSESSMENTS'
   | 'FINDINGS'
   | 'SITE_ASSESSMENTS',
@@ -74,6 +75,10 @@ export const Steps: Record<
   FINDINGS: {
     id: 'fetch-findings',
     name: 'Fetch Findings',
+  },
+  BUILD_FINDING_SCAN: {
+    id: 'build-finding-scan-relationship',
+    name: 'Build Findings and Scan Relationship',
   },
 };
 
