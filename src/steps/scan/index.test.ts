@@ -9,7 +9,7 @@ afterEach(async () => {
   await recording.stop();
 });
 
-test.skip('fetch-application-assessments', async () => {
+test('fetch-application-assessments', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
     name: 'fetch-application-assessments',
@@ -20,7 +20,7 @@ test.skip('fetch-application-assessments', async () => {
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
 
-test.skip('fetch-site-assessments', async () => {
+test('fetch-site-assessments', async () => {
   recording = setupProjectRecording({
     directory: __dirname,
     name: 'fetch-site-assessments',
