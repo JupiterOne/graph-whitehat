@@ -135,19 +135,6 @@ export class APIClient {
     }
   }
 
-  public async getCurrentUser(): Promise<WhitehatCurrentUser> {
-    return this.request(this.withBaseUri('/whoami'));
-  }
-
-  public async iterateAssets(
-    iteratee: ResourceIteratee<WhitehatAsset>,
-  ): Promise<void> {
-    return this.paginatedRequest<WhitehatAsset>(
-      this.withBaseUri('/assets'),
-      iteratee,
-    );
-  }
-
   public async iterateApplicationScans(
     appId: number,
     iteratee: ResourceIteratee<WhitehatAppScan>,
@@ -158,32 +145,11 @@ export class APIClient {
     );
   }
 
-  public async getEventSubscriptions(): Promise<WhitehatEventSubscriptionsResponse> {
-    return this.request(this.withBaseUri(`/eventSubscriptions`));
-  }
-
-  public async getSiteScans(siteId: number): Promise<WhitehatSiteScan> {
-    return this.request(
-      this.withBaseUri(`/site/${siteId}/last_completed_scans`),
-    );
-  }
-
-  public async iterateUsers(
-    iteratee: ResourceIteratee<WhitehatUser>,
-    query?: string,
+  public async iterateAssets(
+    iteratee: ResourceIteratee<WhitehatAsset>,
   ): Promise<void> {
-    return this.paginatedRequest<WhitehatUser>(
-      this.withBaseUri(`/users`),
-      iteratee,
-      query,
-    );
-  }
-
-  public async iterateGroups(
-    iteratee: ResourceIteratee<WhitehatGroup>,
-  ): Promise<void> {
-    return this.paginatedRequest<WhitehatGroup>(
-      this.withBaseUri(`/groups`),
+    return this.paginatedRequest<WhitehatAsset>(
+      this.withBaseUri('/assets'),
       iteratee,
     );
   }
@@ -199,6 +165,40 @@ export class APIClient {
     );
   }
 
+  public async iterateGroups(
+    iteratee: ResourceIteratee<WhitehatGroup>,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatGroup>(
+      this.withBaseUri(`/groups`),
+      iteratee,
+    );
+  }
+
+  public async iterateUsers(
+    iteratee: ResourceIteratee<WhitehatUser>,
+    query?: string,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatUser>(
+      this.withBaseUri(`/users`),
+      iteratee,
+      query,
+    );
+  }
+
+  public async getApplication(
+    applicationId: number,
+  ): Promise<WhitehatApplication> {
+    return this.request(this.withBaseUri(`/application/${applicationId}`));
+  }
+
+  public async getCurrentUser(): Promise<WhitehatCurrentUser> {
+    return this.request(this.withBaseUri('/whoami'));
+  }
+
+  public async getEventSubscriptions(): Promise<WhitehatEventSubscriptionsResponse> {
+    return this.request(this.withBaseUri(`/eventSubscriptions`));
+  }
+
   public async getRoles(): Promise<WhitehatRoleResponse> {
     return this.request(this.withBaseUri(`/userRoles`));
   }
@@ -207,10 +207,10 @@ export class APIClient {
     return this.request(this.withBaseUri(`/v2/sites/${siteId}`));
   }
 
-  public async getApplication(
-    applicationId: number,
-  ): Promise<WhitehatApplication> {
-    return this.request(this.withBaseUri(`/application/${applicationId}`));
+  public async getSiteScans(siteId: number): Promise<WhitehatSiteScan> {
+    return this.request(
+      this.withBaseUri(`/site/${siteId}/last_completed_scans`),
+    );
   }
 }
 
