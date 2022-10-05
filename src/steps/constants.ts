@@ -10,6 +10,7 @@ export const SERVICE_ENTITY_KEY = 'entity:service';
 export const Steps: Record<
   | 'ACCOUNT'
   | 'ASSETS'
+  | 'APPLIANCES'
   | 'SERVICE'
   | 'SITES'
   | 'APPLICATION'
@@ -32,6 +33,10 @@ export const Steps: Record<
   ASSETS: {
     id: 'fetch-assets',
     name: 'Fetch Assets',
+  },
+  APPLIANCES: {
+    id: 'fetch-appliances',
+    name: 'Fetch Appliances',
   },
   SERVICE: {
     id: 'fetch-service',
@@ -90,6 +95,7 @@ export const Steps: Record<
 export const Entities: Record<
   | 'ACCOUNT'
   | 'ASSET'
+  | 'APPLIANCE'
   | 'SITE'
   | 'APPLICATION'
   | 'CODEBASE'
@@ -110,6 +116,11 @@ export const Entities: Record<
     resourceName: 'Asset',
     _type: 'whitehat_asset',
     _class: ['Application'],
+  },
+  APPLIANCE: {
+    resourceName: 'Appliance',
+    _type: 'whitehat_appliance',
+    _class: ['Gateway'],
   },
   SITE: {
     resourceName: 'Site',
@@ -160,6 +171,7 @@ export const Entities: Record<
 
 export const Relationships: Record<
   | 'ACCOUNT_HAS_ASSET'
+  | 'ACCOUNT_HAS_APPLIANCE'
   | 'ASSET_HAS_SITE'
   | 'ASSET_HAS_APPLICATION'
   | 'APPLICATION_HAS_ASSESSMENT'
@@ -181,6 +193,12 @@ export const Relationships: Record<
     sourceType: Entities.ACCOUNT._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.ASSET._type,
+  },
+  ACCOUNT_HAS_APPLIANCE: {
+    _type: 'whitehat_account_has_appliance',
+    sourceType: Entities.ACCOUNT._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.APPLIANCE._type,
   },
   ASSET_HAS_SITE: {
     _type: 'whitehat_asset_has_web_app_domain',

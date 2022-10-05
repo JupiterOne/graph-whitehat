@@ -11,6 +11,7 @@ import { roleSpec } from './roles';
 import { siteSpec } from './sites';
 import { applicationSpec } from './application';
 import { findingSpec } from './findings';
+import { applianceSpec } from './appliances';
 
 export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
   integrationSteps: [
@@ -24,5 +25,6 @@ export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
     ...siteSpec,
     ...applicationSpec,
     ...findingSpec,
+    ...applianceSpec,
   ],
 };

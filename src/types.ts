@@ -237,3 +237,18 @@ export interface WhitehatCodebase {
   label: string;
   repository_url: string;
 }
+
+export interface WhitehatAppliance {
+  id: number;
+  label: string;
+  type: string;
+  status: string;
+  ubuntuVersion: number;
+  clientID: number;
+  cloudRequestProgress: number;
+  associatedAssetCount: number;
+  averageLinesOfCode: number;
+  migrationStatus: number;
+  satelliteID: number;
+  serverConfAssetCount: number;
+}

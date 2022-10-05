@@ -20,6 +20,7 @@ import {
   WhitehatApplication,
   WhitehatFinding,
   WhitehatCodebaseResponse,
+  WhitehatAppliance,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -134,6 +135,15 @@ export class APIClient {
         statusText: err.statusText,
       });
     }
+  }
+
+  public async iterateAppliances(
+    iteratee: ResourceIteratee<WhitehatAppliance>,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatAppliance>(
+      this.withBaseUri(`/appliances`),
+      iteratee,
+    );
   }
 
   public async iterateApplicationScans(

@@ -1,4 +1,5 @@
 import { accountSteps } from './account';
+import { applianceSteps } from './appliances';
 import { applicationSteps } from './applications';
 import { assetSteps } from './assets';
 import { findingSteps } from './findings';
@@ -20,6 +21,7 @@ const integrationSteps = [
   ...siteSteps,
   ...applicationSteps,
   ...findingSteps,
+  ...applianceSteps,
 ];
 
 export { integrationSteps };

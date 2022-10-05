@@ -80,6 +80,7 @@ The following entities are created:
 | Resources                          | Entity `_type`         | Entity `_class`       |
 | ---------------------------------- | ---------------------- | --------------------- |
 | Account                            | `whitehat_account`     | `Account`             |
+| Appliance                          | `whitehat_appliance`   | `Gateway`             |
 | Application and Mobile Application | `whitehat_application` | `Application`         |
 | Assessment                         | `whitehat_assessment`  | `Assessment`          |
 | Asset                              | `whitehat_asset`       | `Application`         |
@@ -99,6 +100,7 @@ The following relationships are created:
 | ---------------------- | --------------------- | ---------------------- |
 | `web_app_domain`       | **HAS**               | `whitehat_assessment`  |
 | `web_app_domain`       | **HAS**               | `whitehat_finding`     |
+| `whitehat_account`     | **HAS**               | `whitehat_appliance`   |
 | `whitehat_account`     | **HAS**               | `whitehat_asset`       |
 | `whitehat_account`     | **HAS**               | `whitehat_group`       |
 | `whitehat_account`     | **HAS**               | `whitehat_scan`        |
