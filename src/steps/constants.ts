@@ -18,6 +18,7 @@ export const Steps: Record<
   | 'BUILD_USER_ROLE'
   | 'BUILD_USER_GROUP'
   | 'ROLES'
+  | 'CODEBASES'
   | 'BUILD_FINDING_SCAN'
   | 'APP_ASSESSMENTS'
   | 'FINDINGS'
@@ -80,6 +81,10 @@ export const Steps: Record<
     id: 'build-finding-scan-relationship',
     name: 'Build Findings and Scan Relationship',
   },
+  CODEBASES: {
+    id: 'fetch-codebases',
+    name: 'Fetch Codebases',
+  },
 };
 
 export const Entities: Record<
@@ -87,6 +92,7 @@ export const Entities: Record<
   | 'ASSET'
   | 'SITE'
   | 'APPLICATION'
+  | 'CODEBASE'
   | 'SERVICE'
   | 'USER'
   | 'ROLE'
@@ -145,6 +151,11 @@ export const Entities: Record<
     _type: 'whitehat_finding',
     _class: ['Finding'],
   },
+  CODEBASE: {
+    resourceName: 'Codebase',
+    _type: 'whitehat_codebase',
+    _class: ['CodeRepo'],
+  },
 };
 
 export const Relationships: Record<
@@ -153,6 +164,7 @@ export const Relationships: Record<
   | 'ASSET_HAS_APPLICATION'
   | 'APPLICATION_HAS_ASSESSMENT'
   | 'APPLICATION_HAS_FINDING'
+  | 'APPLICATION_HAS_CODEBASE'
   | 'SITE_HAS_FINDING'
   | 'SITE_HAS_ASSESSMENT'
   | 'ACCOUNT_HAS_SERVICE'
@@ -241,6 +253,12 @@ export const Relationships: Record<
     sourceType: Entities.APPLICATION._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.FINDING._type,
+  },
+  APPLICATION_HAS_CODEBASE: {
+    _type: 'whitehat_application_has_codebase',
+    sourceType: Entities.APPLICATION._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.CODEBASE._type,
   },
   SITE_HAS_FINDING: {
     _type: 'web_app_domain_has_whitehat_finding',

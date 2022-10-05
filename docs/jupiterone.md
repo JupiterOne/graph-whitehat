@@ -83,6 +83,7 @@ The following entities are created:
 | Application and Mobile Application | `whitehat_application` | `Application`         |
 | Assessment                         | `whitehat_assessment`  | `Assessment`          |
 | Asset                              | `whitehat_asset`       | `Application`         |
+| Codebase                           | `whitehat_codebase`    | `CodeRepo`            |
 | Finding                            | `whitehat_finding`     | `Finding`             |
 | Group                              | `whitehat_group`       | `UserGroup`           |
 | Role                               | `whitehat_role`        | `AccessRole`          |
@@ -103,6 +104,7 @@ The following relationships are created:
 | `whitehat_account`     | **HAS**               | `whitehat_scan`        |
 | `whitehat_account`     | **HAS**               | `whitehat_user`        |
 | `whitehat_application` | **HAS**               | `whitehat_assessment`  |
+| `whitehat_application` | **HAS**               | `whitehat_codebase`    |
 | `whitehat_application` | **HAS**               | `whitehat_finding`     |
 | `whitehat_assessment`  | **IDENTIFIED**        | `whitehat_finding`     |
 | `whitehat_asset`       | **HAS**               | `whitehat_application` |

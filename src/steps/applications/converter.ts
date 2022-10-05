@@ -7,7 +7,7 @@ import {
   parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
-import { WhitehatApplication } from '../../types';
+import { WhitehatApplication, WhitehatCodebase } from '../../types';
 
 import { Entities } from '../constants';
 
@@ -47,6 +47,34 @@ export function createApplicationEntity(data: WhitehatApplication): Entity {
   });
 }
 
+export function createCodebaseEntity(data: WhitehatCodebase): Entity {
+  return createIntegrationEntity({
+    entityData: {
+      source: data,
+      assign: {
+        _key: generateKey(Entities.CODEBASE._type, data.id),
+        _type: Entities.CODEBASE._type,
+        _class: Entities.CODEBASE._class,
+        fileName: data.file_name,
+        name: data.file_name || data.label,
+        displayName: data.file_name || data.label,
+        fileTreeJson: data.file_tree_json,
+        repositoryType: data.repository_type,
+        id: data.id,
+        certificate: data.certificate,
+        authType: data.auth_type,
+        excludeDirs: data.exclude_dirs,
+        href: data.href,
+        username: data.username,
+        repositoryRevision: data.repository_revision,
+        label: data.label,
+        repositoryUrl: data.repository_url,
+        ...(data.repository_url && { webLink: data.repository_url }),
+      },
+    },
+  });
+}
+
 export function createApplicationAssetRelationship({
   applicationEntity,
   assetEntity,
@@ -58,5 +86,19 @@ export function createApplicationAssetRelationship({
     _class: RelationshipClass.HAS,
     from: assetEntity,
     to: applicationEntity,
+  });
+}
+
+export function createApplicationCodebaseRelationship({
+  applicationEntity,
+  codebaseEntity,
+}: {
+  applicationEntity: Entity;
+  codebaseEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.HAS,
+    from: applicationEntity,
+    to: codebaseEntity,
   });
 }

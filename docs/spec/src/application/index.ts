@@ -27,4 +27,29 @@ export const applicationSpec: StepSpec<IntegrationConfig>[] = [
     dependsOn: ['fetch-assets'],
     implemented: true,
   },
+  {
+    /**
+     * ENDPOINT: https://localhost/api/v1/users
+     * PATTERN: Fetch Entities
+     */
+    id: 'fetch-codebases',
+    name: 'Fetch Codebases',
+    entities: [
+      {
+        resourceName: 'Codebase',
+        _type: 'whitehat_codebase',
+        _class: ['CodeRepo'],
+      },
+    ],
+    relationships: [
+      {
+        _type: 'whitehat_application_has_codebase',
+        sourceType: 'whitehat_application',
+        _class: RelationshipClass.HAS,
+        targetType: 'whitehat_codebase',
+      },
+    ],
+    dependsOn: ['fetch-applications'],
+    implemented: true,
+  },
 ];

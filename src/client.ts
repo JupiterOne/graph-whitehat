@@ -19,6 +19,7 @@ import {
   WhitehatSite,
   WhitehatApplication,
   WhitehatFinding,
+  WhitehatCodebaseResponse,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -189,6 +190,10 @@ export class APIClient {
     applicationId: number,
   ): Promise<WhitehatApplication> {
     return this.request(this.withBaseUri(`/application/${applicationId}`));
+  }
+
+  public async getCodebases(appId: number): Promise<WhitehatCodebaseResponse> {
+    return this.request(this.withBaseUri(`/application/${appId}/codebase`));
   }
 
   public async getCurrentUser(): Promise<WhitehatCurrentUser> {

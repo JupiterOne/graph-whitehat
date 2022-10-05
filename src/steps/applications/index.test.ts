@@ -19,3 +19,14 @@ test('fetch-applications', async () => {
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
+
+test('fetch-codebases', async () => {
+  recording = setupProjectRecording({
+    directory: __dirname,
+    name: 'fetch-codebases',
+  });
+
+  const stepConfig = buildStepTestConfigForStep(Steps.CODEBASES.id);
+  const stepResult = await executeStepWithDependencies(stepConfig);
+  expect(stepResult).toMatchStepMetadata(stepConfig);
+});

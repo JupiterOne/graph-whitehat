@@ -216,3 +216,24 @@ export interface WhitehatFinding {
   verificationStatus: string;
   manual: boolean;
 }
+
+export interface WhitehatCodebaseResponse {
+  collection: WhitehatCodebase[];
+  type: string;
+  href: string;
+}
+
+export interface WhitehatCodebase {
+  file_name: string;
+  file_tree_json: string;
+  repository_type: string;
+  id: string;
+  certificate: string;
+  auth_type: string;
+  exclude_dirs: string[];
+  href: string;
+  username: string;
+  repository_revision: string;
+  label: string;
+  repository_url: string;
+}

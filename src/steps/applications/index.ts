@@ -6,11 +6,13 @@ import {
 import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
-import { WhitehatAsset } from '../../types';
+import { WhitehatApplication, WhitehatAsset } from '../../types';
 import { Steps, Entities, Relationships } from '../constants';
 import {
   createApplicationAssetRelationship,
+  createApplicationCodebaseRelationship,
   createApplicationEntity,
+  createCodebaseEntity,
 } from './converter';
 
 export async function fetchApplications({
@@ -50,6 +52,40 @@ export async function fetchApplications({
   );
 }
 
+export async function fetchCodebases({
+  jobState,
+  instance,
+  logger,
+}: IntegrationStepExecutionContext<IntegrationConfig>) {
+  const apiClient = createAPIClient(instance.config);
+
+  await jobState.iterateEntities(
+    { _type: Entities.APPLICATION._type },
+    async (applicationEntity) => {
+      const application = getRawData<WhitehatApplication>(applicationEntity);
+
+      if (!application)
+        logger.warn(
+          `Can not get raw data for application entity: ${applicationEntity._key}`,
+        );
+      else {
+        const codebases = await apiClient.getCodebases(application.id);
+        for (const codebase of codebases.collection) {
+          const codebaseEntity = await jobState.addEntity(
+            createCodebaseEntity(codebase),
+          );
+          await jobState.addRelationship(
+            createApplicationCodebaseRelationship({
+              applicationEntity,
+              codebaseEntity,
+            }),
+          );
+        }
+      }
+    },
+  );
+}
+
 export const applicationSteps: IntegrationStep<IntegrationConfig>[] = [
   {
     id: Steps.APPLICATION.id,
@@ -58,5 +94,13 @@ export const applicationSteps: IntegrationStep<IntegrationConfig>[] = [
     relationships: [Relationships.ASSET_HAS_APPLICATION],
     dependsOn: [Steps.ASSETS.id],
     executionHandler: fetchApplications,
+  },
+  {
+    id: Steps.CODEBASES.id,
+    name: Steps.CODEBASES.name,
+    entities: [Entities.CODEBASE],
+    relationships: [Relationships.APPLICATION_HAS_CODEBASE],
+    dependsOn: [Steps.APPLICATION.id],
+    executionHandler: fetchCodebases,
   },
 ];
