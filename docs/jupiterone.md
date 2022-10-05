@@ -85,6 +85,7 @@ The following entities are created:
 | Assessment                         | `whitehat_assessment`  | `Assessment`          |
 | Asset                              | `whitehat_asset`       | `Application`         |
 | Codebase                           | `whitehat_codebase`    | `CodeRepo`            |
+| Endpoint                           | `web_app_endpoint`     | `ApplicationEndpoint` |
 | Finding                            | `whitehat_finding`     | `Finding`             |
 | Group                              | `whitehat_group`       | `UserGroup`           |
 | Role                               | `whitehat_role`        | `AccessRole`          |
@@ -98,6 +99,7 @@ The following relationships are created:
 
 | Source Entity `_type`  | Relationship `_class` | Target Entity `_type`  |
 | ---------------------- | --------------------- | ---------------------- |
+| `web_app_domain`       | **HAS**               | `web_app_endpoint`     |
 | `web_app_domain`       | **HAS**               | `whitehat_assessment`  |
 | `web_app_domain`       | **HAS**               | `whitehat_finding`     |
 | `whitehat_account`     | **HAS**               | `whitehat_appliance`   |

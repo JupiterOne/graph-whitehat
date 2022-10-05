@@ -2,6 +2,7 @@ import { accountSteps } from './account';
 import { applianceSteps } from './appliances';
 import { applicationSteps } from './applications';
 import { assetSteps } from './assets';
+import { endpointSteps } from './endpoints';
 import { findingSteps } from './findings';
 import { groupSteps } from './groups';
 import { roleSteps } from './roles';
@@ -22,6 +23,7 @@ const integrationSteps = [
   ...applicationSteps,
   ...findingSteps,
   ...applianceSteps,
+  ...endpointSteps,
 ];
 
 export { integrationSteps };

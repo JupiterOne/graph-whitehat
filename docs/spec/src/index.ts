@@ -12,6 +12,7 @@ import { siteSpec } from './sites';
 import { applicationSpec } from './application';
 import { findingSpec } from './findings';
 import { applianceSpec } from './appliances';
+import { endpointSpec } from './endpoints';
 
 export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
   integrationSteps: [
@@ -26,5 +27,6 @@ export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
     ...applicationSpec,
     ...findingSpec,
     ...applianceSpec,
+    ...endpointSpec,
   ],
 };

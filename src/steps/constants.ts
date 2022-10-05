@@ -17,6 +17,7 @@ export const Steps: Record<
   | 'USERS'
   | 'GROUPS'
   | 'BUILD_USER_ROLE'
+  | 'ENDPOINTS'
   | 'BUILD_USER_GROUP'
   | 'ROLES'
   | 'CODEBASES'
@@ -58,6 +59,10 @@ export const Steps: Record<
     id: 'fetch-sites',
     name: 'Fetch Sites',
   },
+  ENDPOINTS: {
+    id: 'fetch-endpoints',
+    name: 'Fetch Endpoints',
+  },
   APPLICATION: {
     id: 'fetch-applications',
     name: 'Fetch Applications',
@@ -97,6 +102,7 @@ export const Entities: Record<
   | 'ASSET'
   | 'APPLIANCE'
   | 'SITE'
+  | 'ENDPOINT'
   | 'APPLICATION'
   | 'CODEBASE'
   | 'SERVICE'
@@ -116,6 +122,11 @@ export const Entities: Record<
     resourceName: 'Asset',
     _type: 'whitehat_asset',
     _class: ['Application'],
+  },
+  ENDPOINT: {
+    resourceName: 'Endpoint',
+    _type: 'web_app_endpoint',
+    _class: ['ApplicationEndpoint'],
   },
   APPLIANCE: {
     resourceName: 'Appliance',
@@ -178,6 +189,7 @@ export const Relationships: Record<
   | 'APPLICATION_HAS_FINDING'
   | 'APPLICATION_HAS_CODEBASE'
   | 'SITE_HAS_FINDING'
+  | 'SITE_HAS_ENDPOINT'
   | 'SITE_HAS_ASSESSMENT'
   | 'ACCOUNT_HAS_SERVICE'
   | 'ACCOUNT_HAS_USER'
@@ -217,6 +229,12 @@ export const Relationships: Record<
     sourceType: Entities.SITE._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.ASSESSMENT._type,
+  },
+  SITE_HAS_ENDPOINT: {
+    _type: 'web_app_domain_has_endpoint',
+    sourceType: Entities.SITE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.ENDPOINT._type,
   },
   APPLICATION_HAS_ASSESSMENT: {
     _type: 'whitehat_application_has_assessment',

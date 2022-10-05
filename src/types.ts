@@ -252,3 +252,15 @@ export interface WhitehatAppliance {
   satelliteID: number;
   serverConfAssetCount: number;
 }
+
+export interface WhitehatEndpoint {
+  id: number;
+  createdTime: number;
+  edited: string;
+  editedVersion: number;
+  imported: string;
+  siteID: string;
+  siteLabel: string;
+  swaggerVersion: string;
+  userID: number;
+}
