@@ -4,11 +4,12 @@ import {
   Relationship,
   createDirectRelationship,
   RelationshipClass,
+  createMappedRelationship,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
 import { WhitehatComponent } from '../../types';
 
-import { Entities } from '../constants';
+import { Entities, mappedRelationships } from '../constants';
 
 export function createComponentEntity(data: WhitehatComponent): Entity {
   return createIntegrationEntity({
@@ -46,5 +47,24 @@ export function createApplicationComponentRelationship({
     _class: RelationshipClass.HAS,
     from: applicationEntity,
     to: componentEntity,
+  });
+}
+
+export function createComponentCveMappedRelationship({
+  componentEntity,
+  cve,
+}: {
+  componentEntity: Entity;
+  cve: string;
+}): Relationship {
+  return createMappedRelationship({
+    _class: mappedRelationships.COMPONENT_HAS_CVE._class,
+    _type: mappedRelationships.COMPONENT_HAS_CVE._type,
+    source: componentEntity,
+    target: {
+      _type: mappedRelationships.COMPONENT_HAS_CVE.targetType,
+      _key: cve,
+    },
+    relationshipDirection: mappedRelationships.COMPONENT_HAS_CVE.direction,
   });
 }

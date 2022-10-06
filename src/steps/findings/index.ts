@@ -1,10 +1,7 @@
 import {
-  createDirectRelationship,
-  createMappedRelationship,
   getRawData,
   IntegrationStep,
   IntegrationStepExecutionContext,
-  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
 import { createAPIClient } from '../../client';
@@ -17,7 +14,13 @@ import {
   Relationships,
   mappedRelationships,
 } from '../constants';
-import { createFindingEntity } from './converter';
+import {
+  createApplicationFindingRelationship,
+  createFindingCweMappedRelationship,
+  createFindingEntity,
+  createScanFindingRelationship,
+  createSiteFindingRelationship,
+} from './converter';
 
 export async function fetchFindings({
   jobState,
@@ -37,11 +40,11 @@ export async function fetchFindings({
       );
 
       if (applicationEntity) {
-        const findingApplicationRelationship = createDirectRelationship({
-          _class: RelationshipClass.HAS,
-          from: applicationEntity,
-          to: findingEntity,
-        });
+        const findingApplicationRelationship =
+          createApplicationFindingRelationship({
+            applicationEntity,
+            findingEntity,
+          });
 
         if (!(await jobState.hasKey(findingApplicationRelationship._key)))
           await jobState.addRelationship(findingApplicationRelationship);
@@ -52,10 +55,9 @@ export async function fetchFindings({
       );
 
       if (siteEntity) {
-        const findingSiteRelationship = createDirectRelationship({
-          _class: RelationshipClass.HAS,
-          from: siteEntity,
-          to: findingEntity,
+        const findingSiteRelationship = createSiteFindingRelationship({
+          siteEntity,
+          findingEntity,
         });
 
         if (!(await jobState.hasKey(findingSiteRelationship._key)))
@@ -82,10 +84,9 @@ export async function buildFindingScanRelationship({
         );
 
         if (scanEntity) {
-          const findingScanRelationship = createDirectRelationship({
-            _class: RelationshipClass.IDENTIFIED,
-            from: scanEntity,
-            to: findingEntity,
+          const findingScanRelationship = createScanFindingRelationship({
+            scanEntity,
+            findingEntity,
           });
 
           if (!(await jobState.hasKey(findingScanRelationship._key)))
@@ -114,16 +115,9 @@ export async function buildFindingCweRelationship({
             const lowerCaseTag = tag.toLowerCase();
             if (lowerCaseTag.includes('cwe')) {
               await jobState.addRelationship(
-                createMappedRelationship({
-                  _class: mappedRelationships.FINDING_EXPLOITS_CWE._class,
-                  _type: mappedRelationships.FINDING_EXPLOITS_CWE._type,
-                  source: findingEntity,
-                  target: {
-                    _type: mappedRelationships.FINDING_EXPLOITS_CWE.targetType,
-                    _key: lowerCaseTag,
-                  },
-                  relationshipDirection:
-                    mappedRelationships.FINDING_EXPLOITS_CWE.direction,
+                createFindingCweMappedRelationship({
+                  findingEntity,
+                  cwe: lowerCaseTag,
                 }),
               );
             }

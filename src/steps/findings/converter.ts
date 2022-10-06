@@ -1,12 +1,16 @@
 import {
+  createDirectRelationship,
   createIntegrationEntity,
+  createMappedRelationship,
   Entity,
   parseTimePropertyValue,
+  Relationship,
+  RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
 import { WhitehatFinding } from '../../types';
 
-import { Entities } from '../constants';
+import { Entities, mappedRelationships } from '../constants';
 
 export function createFindingEntity(data: WhitehatFinding): Entity {
   const { tags, ...rest } = data;
@@ -82,5 +86,66 @@ export function createFindingEntity(data: WhitehatFinding): Entity {
           .join('/'),
       },
     },
+  });
+}
+
+export function createApplicationFindingRelationship({
+  applicationEntity,
+  findingEntity,
+}: {
+  applicationEntity: Entity;
+  findingEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.HAS,
+    from: applicationEntity,
+    to: findingEntity,
+  });
+}
+
+export function createSiteFindingRelationship({
+  siteEntity,
+  findingEntity,
+}: {
+  siteEntity: Entity;
+  findingEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.HAS,
+    from: siteEntity,
+    to: findingEntity,
+  });
+}
+
+export function createScanFindingRelationship({
+  scanEntity,
+  findingEntity,
+}: {
+  scanEntity: Entity;
+  findingEntity: Entity;
+}): Relationship {
+  return createDirectRelationship({
+    _class: RelationshipClass.IDENTIFIED,
+    from: scanEntity,
+    to: findingEntity,
+  });
+}
+
+export function createFindingCweMappedRelationship({
+  findingEntity,
+  cwe,
+}: {
+  findingEntity: Entity;
+  cwe: string;
+}): Relationship {
+  return createMappedRelationship({
+    _class: mappedRelationships.FINDING_EXPLOITS_CWE._class,
+    _type: mappedRelationships.FINDING_EXPLOITS_CWE._type,
+    source: findingEntity,
+    target: {
+      _type: mappedRelationships.FINDING_EXPLOITS_CWE.targetType,
+      _key: cwe,
+    },
+    relationshipDirection: mappedRelationships.FINDING_EXPLOITS_CWE.direction,
   });
 }

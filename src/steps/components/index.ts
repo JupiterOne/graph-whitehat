@@ -2,7 +2,6 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
   getRawData,
-  createMappedRelationship,
 } from '@jupiterone/integration-sdk-core';
 import { createAPIClient } from '../../client';
 
@@ -16,6 +15,7 @@ import {
 } from '../constants';
 import {
   createApplicationComponentRelationship,
+  createComponentCveMappedRelationship,
   createComponentEntity,
 } from './converter';
 
@@ -71,16 +71,9 @@ export async function buildComponentCveRelationship({
         if (component.cves.length > 0)
           for (const { name } of component.cves)
             await jobState.addRelationship(
-              createMappedRelationship({
-                _class: mappedRelationships.COMPONENT_HAS_CVE._class,
-                _type: mappedRelationships.COMPONENT_HAS_CVE._type,
-                source: componentEntity,
-                target: {
-                  _type: mappedRelationships.COMPONENT_HAS_CVE.targetType,
-                  _key: name.toLowerCase(),
-                },
-                relationshipDirection:
-                  mappedRelationships.COMPONENT_HAS_CVE.direction,
+              createComponentCveMappedRelationship({
+                componentEntity,
+                cve: name.toLowerCase(),
               }),
             );
       }
