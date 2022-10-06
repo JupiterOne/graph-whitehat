@@ -30,3 +30,18 @@ test('build-finding-scan-relationship', async () => {
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });
+
+test('build-finding-cwe-relationship', async () => {
+  recording = setupProjectRecording({
+    directory: __dirname,
+    name: 'build-finding-cwe-relationship',
+  });
+
+  const stepConfig = buildStepTestConfigForStep(Steps.BUILD_FINDING_EXPLOIT.id);
+  const stepResult = await executeStepWithDependencies(stepConfig);
+  expect(
+    stepResult.collectedRelationships.some(
+      (r) => r._type === 'whitehat_finding_exploits_cwe',
+    ),
+  ).toBe(true);
+});

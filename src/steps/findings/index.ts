@@ -1,5 +1,6 @@
 import {
   createDirectRelationship,
+  createMappedRelationship,
   getRawData,
   IntegrationStep,
   IntegrationStepExecutionContext,
@@ -10,7 +11,12 @@ import { createAPIClient } from '../../client';
 
 import { IntegrationConfig } from '../../config';
 import { WhitehatFinding } from '../../types';
-import { Steps, Entities, Relationships } from '../constants';
+import {
+  Steps,
+  Entities,
+  Relationships,
+  mappedRelationships,
+} from '../constants';
 import { createFindingEntity } from './converter';
 
 export async function fetchFindings({
@@ -56,7 +62,7 @@ export async function fetchFindings({
           await jobState.addRelationship(findingSiteRelationship);
       }
     }
-  });
+  }, `&fields=likelihoodRating%2CimpactRating%2CcvssV3`);
 }
 
 export async function buildFindingScanRelationship({
@@ -90,6 +96,44 @@ export async function buildFindingScanRelationship({
   );
 }
 
+export async function buildFindingCweRelationship({
+  jobState,
+  logger,
+}: IntegrationStepExecutionContext<IntegrationConfig>) {
+  await jobState.iterateEntities(
+    { _type: Entities.FINDING._type },
+    async (findingEntity) => {
+      const finding = getRawData<WhitehatFinding>(findingEntity);
+
+      if (!finding) {
+        logger.warn(`Can not get raw data for entity ${findingEntity._key}`);
+      } else {
+        const subTypeTags = finding.subTypeTags;
+        if (subTypeTags?.length > 0) {
+          for (const tag of subTypeTags) {
+            const lowerCaseTag = tag.toLowerCase();
+            if (lowerCaseTag.includes('cwe')) {
+              await jobState.addRelationship(
+                createMappedRelationship({
+                  _class: mappedRelationships.FINDING_EXPLOITS_CWE._class,
+                  _type: mappedRelationships.FINDING_EXPLOITS_CWE._type,
+                  source: findingEntity,
+                  target: {
+                    _type: 'cwe',
+                    _key: lowerCaseTag,
+                  },
+                  relationshipDirection:
+                    mappedRelationships.FINDING_EXPLOITS_CWE.direction,
+                }),
+              );
+            }
+          }
+        }
+      }
+    },
+  );
+}
+
 export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
   {
     id: Steps.FINDINGS.id,
@@ -113,5 +157,14 @@ export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
       Steps.SITE_ASSESSMENTS.id,
     ],
     executionHandler: buildFindingScanRelationship,
+  },
+  {
+    id: Steps.BUILD_FINDING_EXPLOIT.id,
+    name: Steps.BUILD_FINDING_EXPLOIT.name,
+    entities: [],
+    relationships: [],
+    mappedRelationships: [mappedRelationships.FINDING_EXPLOITS_CWE],
+    dependsOn: [Steps.FINDINGS.id],
+    executionHandler: buildFindingCweRelationship,
   },
 ];

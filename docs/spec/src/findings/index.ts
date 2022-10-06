@@ -1,4 +1,8 @@
-import { RelationshipClass, StepSpec } from '@jupiterone/integration-sdk-core';
+import {
+  RelationshipClass,
+  RelationshipDirection,
+  StepSpec,
+} from '@jupiterone/integration-sdk-core';
 import { IntegrationConfig } from '../../../../src/config';
 
 export const findingSpec: StepSpec<IntegrationConfig>[] = [
@@ -54,6 +58,27 @@ export const findingSpec: StepSpec<IntegrationConfig>[] = [
       'fetch-application-assessments',
       'fetch-site-assessments',
     ],
+    implemented: true,
+  },
+  {
+    /**
+     * ENDPOINT: n/a
+     * PATTERN: Singleton
+     */
+    id: 'build-finding-exploit-relationship',
+    name: 'Build Finding and Exploit Relationship',
+    entities: [],
+    relationships: [],
+    mappedRelationships: [
+      {
+        _class: RelationshipClass.EXPLOITS,
+        _type: 'whitehat_finding_exploits_cwe',
+        direction: RelationshipDirection.FORWARD,
+        sourceType: 'whitehat_finding',
+        targetType: 'cwe',
+      },
+    ],
+    dependsOn: ['fetch-findings'],
     implemented: true,
   },
 ];

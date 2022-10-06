@@ -117,6 +117,14 @@ The following relationships are created:
 | `whitehat_scan`        | **PERFORMED**         | `whitehat_assessment`  |
 | `whitehat_user`        | **ASSIGNED**          | `whitehat_role`        |
 
+### Mapped Relationships
+
+The following mapped relationships are created:
+
+| Source Entity `_type` | Relationship `_class` | Target Entity `_type` | Direction |
+| --------------------- | --------------------- | --------------------- | --------- |
+| `whitehat_finding`    | **EXPLOITS**          | `*cwe*`               | FORWARD   |
+
 <!--
 ********************************************************************************
 END OF GENERATED DOCUMENTATION AFTER BELOW MARKER

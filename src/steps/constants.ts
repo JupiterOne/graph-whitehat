@@ -1,6 +1,8 @@
 import {
   RelationshipClass,
+  RelationshipDirection,
   StepEntityMetadata,
+  StepMappedRelationshipMetadata,
   StepRelationshipMetadata,
 } from '@jupiterone/integration-sdk-core';
 
@@ -22,6 +24,7 @@ export const Steps: Record<
   | 'ROLES'
   | 'CODEBASES'
   | 'BUILD_FINDING_SCAN'
+  | 'BUILD_FINDING_EXPLOIT'
   | 'APP_ASSESSMENTS'
   | 'FINDINGS'
   | 'SITE_ASSESSMENTS',
@@ -90,6 +93,10 @@ export const Steps: Record<
   BUILD_FINDING_SCAN: {
     id: 'build-finding-scan-relationship',
     name: 'Build Findings and Scan Relationship',
+  },
+  BUILD_FINDING_EXPLOIT: {
+    id: 'build-finding-exploit-relationship',
+    name: 'Build Finding and Exploit Relationship',
   },
   CODEBASES: {
     id: 'fetch-codebases',
@@ -301,5 +308,18 @@ export const Relationships: Record<
     sourceType: Entities.SITE._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.FINDING._type,
+  },
+};
+
+export const mappedRelationships: Record<
+  'FINDING_EXPLOITS_CWE',
+  StepMappedRelationshipMetadata
+> = {
+  FINDING_EXPLOITS_CWE: {
+    _class: RelationshipClass.EXPLOITS,
+    sourceType: Entities.FINDING._type,
+    targetType: 'cwe',
+    direction: RelationshipDirection.FORWARD,
+    _type: `whitehat_finding_exploits_cwe`,
   },
 };

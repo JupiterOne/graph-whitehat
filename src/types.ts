@@ -184,7 +184,7 @@ export interface WhitehatFinding {
   foundRevision: string;
   status: string;
   nonAcceptedStatus: string;
-  severity: number;
+  severity: string;
   threat: number;
   impact: number;
   impactRating: string;
@@ -215,6 +215,12 @@ export interface WhitehatFinding {
   attackVectors: number[];
   verificationStatus: string;
   manual: boolean;
+  cvssV3: {
+    score: number;
+    vector: {
+      [key: string]: string;
+    };
+  };
 }
 
 export interface WhitehatCodebaseResponse {

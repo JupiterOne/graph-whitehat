@@ -71,8 +71,14 @@ export function createFindingEntity(data: WhitehatFinding): Entity {
         verificationStatus: data.verificationStatus,
         manual: data.manual,
         category: 'application',
-        numericSeverity: data.impact,
+        numericSeverity: parseInt(data.severity) || data.impact,
         open: data.status === 'open',
+        score: data.cvssV3?.score,
+        vector: Object.keys(data.cvssV3?.vector)
+          .map((key) => {
+            return `${key}:${data.cvssV3.vector[key]}`;
+          })
+          .join('/'),
       },
     },
   });
