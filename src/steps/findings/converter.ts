@@ -1,6 +1,7 @@
 import {
   createIntegrationEntity,
   Entity,
+  parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 import generateKey from '../../../utils/generateKey';
 import { WhitehatFinding } from '../../types';
@@ -54,10 +55,10 @@ export function createFindingEntity(data: WhitehatFinding): Entity {
           data.hasInstanceLevelCVSSCustomization,
         lastRetested: data.lastRetested,
         retestStatus: data.retestStatus,
-        firstOpened: data.firstOpened,
-        opened: data.opened,
-        closed: data.closed,
-        lastModified: data.lastModified,
+        firstOpenedOn: parseTimePropertyValue(data.firstOpened),
+        opened: parseTimePropertyValue(data.opened),
+        closed: parseTimePropertyValue(data.closed),
+        lastModified: parseTimePropertyValue(data.lastModified),
         zeroDayTags: data.zeroDayTags,
         cveTags: data.cveTags,
         subTypeTags: data.subTypeTags,
