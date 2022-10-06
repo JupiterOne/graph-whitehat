@@ -15,6 +15,8 @@ export const Steps: Record<
   | 'APPLIANCES'
   | 'SERVICE'
   | 'SITES'
+  | 'COMPONENTS'
+  | 'BUILD_COMPONENT_CVE'
   | 'APPLICATION'
   | 'USERS'
   | 'GROUPS'
@@ -102,6 +104,14 @@ export const Steps: Record<
     id: 'fetch-codebases',
     name: 'Fetch Codebases',
   },
+  COMPONENTS: {
+    id: 'fetch-components',
+    name: 'Fetch Components',
+  },
+  BUILD_COMPONENT_CVE: {
+    id: 'build-component-cve-relationship',
+    name: 'Build Component and CVE Relationship',
+  },
 };
 
 export const Entities: Record<
@@ -109,6 +119,7 @@ export const Entities: Record<
   | 'ASSET'
   | 'APPLIANCE'
   | 'SITE'
+  | 'COMPONENT'
   | 'ENDPOINT'
   | 'APPLICATION'
   | 'CODEBASE'
@@ -134,6 +145,11 @@ export const Entities: Record<
     resourceName: 'Endpoint',
     _type: 'web_app_endpoint',
     _class: ['ApplicationEndpoint'],
+  },
+  COMPONENT: {
+    resourceName: 'Component',
+    _type: 'whitehat_component',
+    _class: ['CodeModule'],
   },
   APPLIANCE: {
     resourceName: 'Appliance',
@@ -194,6 +210,7 @@ export const Relationships: Record<
   | 'ASSET_HAS_APPLICATION'
   | 'APPLICATION_HAS_ASSESSMENT'
   | 'APPLICATION_HAS_FINDING'
+  | 'APPLICATION_HAS_COMPONENT'
   | 'APPLICATION_HAS_CODEBASE'
   | 'SITE_HAS_FINDING'
   | 'SITE_HAS_ENDPOINT'
@@ -248,6 +265,12 @@ export const Relationships: Record<
     sourceType: Entities.APPLICATION._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.ASSESSMENT._type,
+  },
+  APPLICATION_HAS_COMPONENT: {
+    _type: 'whitehat_application_has_component',
+    sourceType: Entities.APPLICATION._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.COMPONENT._type,
   },
   ACCOUNT_HAS_SERVICE: {
     _type: 'whitehat_account_has_scan',
@@ -312,7 +335,7 @@ export const Relationships: Record<
 };
 
 export const mappedRelationships: Record<
-  'FINDING_EXPLOITS_CWE',
+  'FINDING_EXPLOITS_CWE' | 'COMPONENT_HAS_CVE',
   StepMappedRelationshipMetadata
 > = {
   FINDING_EXPLOITS_CWE: {
@@ -321,5 +344,12 @@ export const mappedRelationships: Record<
     targetType: 'cwe',
     direction: RelationshipDirection.FORWARD,
     _type: `whitehat_finding_exploits_cwe`,
+  },
+  COMPONENT_HAS_CVE: {
+    _class: RelationshipClass.HAS,
+    sourceType: Entities.COMPONENT._type,
+    targetType: 'cve',
+    direction: RelationshipDirection.FORWARD,
+    _type: `whitehat_component_has_cve`,
   },
 };

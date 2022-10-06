@@ -119,7 +119,7 @@ export async function buildFindingCweRelationship({
                   _type: mappedRelationships.FINDING_EXPLOITS_CWE._type,
                   source: findingEntity,
                   target: {
-                    _type: 'cwe',
+                    _type: mappedRelationships.FINDING_EXPLOITS_CWE.targetType,
                     _key: lowerCaseTag,
                   },
                   relationshipDirection:

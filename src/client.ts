@@ -22,6 +22,7 @@ import {
   WhitehatCodebaseResponse,
   WhitehatAppliance,
   WhitehatEndpoint,
+  WhitehatComponent,
 } from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
@@ -162,6 +163,16 @@ export class APIClient {
   ): Promise<void> {
     return this.paginatedRequest<WhitehatAsset>(
       this.withBaseUri('/assets'),
+      iteratee,
+    );
+  }
+
+  public async iterateComponents(
+    iteratee: ResourceIteratee<WhitehatComponent>,
+    appId: number,
+  ): Promise<void> {
+    return this.paginatedRequest<WhitehatComponent>(
+      this.withBaseUri(`/application/${appId}/framework`),
       iteratee,
     );
   }

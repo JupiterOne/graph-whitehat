@@ -13,6 +13,7 @@ import { applicationSpec } from './application';
 import { findingSpec } from './findings';
 import { applianceSpec } from './appliances';
 import { endpointSpec } from './endpoints';
+import { componentSpec } from './components';
 
 export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
   integrationSteps: [
@@ -28,5 +29,6 @@ export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
     ...findingSpec,
     ...applianceSpec,
     ...endpointSpec,
+    ...componentSpec,
   ],
 };

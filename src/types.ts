@@ -270,3 +270,27 @@ export interface WhitehatEndpoint {
   swaggerVersion: string;
   userID: number;
 }
+
+export interface WhitehatComponent {
+  source_type_name: string;
+  latest_version: string;
+  cves: {
+    name: string;
+    url: string;
+  }[];
+  current_version: string;
+  framework_pretty_name: string;
+  versions_behind: number;
+  source_file_name: string;
+  licenses: [
+    {
+      pretty_name: string;
+      url: string;
+      name: string;
+    },
+  ];
+  framework_id: number;
+  app_id: number;
+  framework_name: string;
+  application_name: string;
+}
