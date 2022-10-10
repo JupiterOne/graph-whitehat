@@ -3,8 +3,8 @@ import {
   IntegrationStepExecutionContext,
   getRawData,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatAsset } from '../../types';
 import { Steps, Entities, Relationships } from '../constants';
@@ -21,22 +21,23 @@ export async function fetchSites({
     { _type: Entities.ASSET._type },
     async (assetEntity) => {
       const asset = getRawData<WhitehatAsset>(assetEntity);
-
-      if (!asset)
+      if (!asset) {
         logger.warn(
-          `Can not get raw data for asset entity: ${assetEntity._key}`,
+          { _key: assetEntity._key },
+          'Could not get raw data for asset entity',
         );
-      else {
-        if (asset.type === 'site') {
-          const site = await apiClient.getSite(asset.subID);
+        return;
+      }
 
-          if (site) {
-            const siteEntity = await jobState.addEntity(createSiteEntity(site));
+      if (asset.type === 'site') {
+        const site = await apiClient.getSite(asset.subID);
 
-            await jobState.addRelationship(
-              createSiteAssetRelationship({ assetEntity, siteEntity }),
-            );
-          }
+        if (site) {
+          const siteEntity = await jobState.addEntity(createSiteEntity(site));
+
+          await jobState.addRelationship(
+            createSiteAssetRelationship({ assetEntity, siteEntity }),
+          );
         }
       }
     },

@@ -1,1 +1,1 @@
-export default (type: string, id: string | number) => `${type}: ${id}`;
+export default (type: string, id: string | number) => `${type}:${id}`;

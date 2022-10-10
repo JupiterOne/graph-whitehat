@@ -2,9 +2,9 @@ import {
   createIntegrationEntity,
   Entity,
 } from '@jupiterone/integration-sdk-core';
+
 import generateKey from '../../../utils/generateKey';
 import { WhitehatCurrentUser } from '../../types';
-
 import { Entities } from '../constants';
 
 export function createAccountEntity(data: WhitehatCurrentUser): Entity {

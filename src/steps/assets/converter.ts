@@ -5,9 +5,9 @@ import {
   createDirectRelationship,
   RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
+
 import generateKey from '../../../utils/generateKey';
 import { WhitehatAsset } from '../../types';
-
 import { Entities } from '../constants';
 
 export function createAssetEntity(data: WhitehatAsset): Entity {

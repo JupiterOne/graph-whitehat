@@ -3,8 +3,8 @@ import {
   IntegrationStepExecutionContext,
   getRawData,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatApplication, WhitehatComponent } from '../../types';
 import {
@@ -30,52 +30,55 @@ export async function fetchComponents({
     { _type: Entities.APPLICATION._type },
     async (applicationEntity) => {
       const application = getRawData<WhitehatApplication>(applicationEntity);
-
-      if (!application)
+      if (!application) {
         logger.warn(
-          `Can not get raw data for application entity: ${applicationEntity._key}`,
+          { _key: applicationEntity._key },
+          'Could not get raw data for application entity',
         );
-      else {
-        await apiClient.iterateComponents(async (component) => {
-          const componentEntity = await jobState.addEntity(
-            createComponentEntity(component),
-          );
-
-          await jobState.addRelationship(
-            createApplicationComponentRelationship({
-              applicationEntity,
-              componentEntity,
-            }),
-          );
-        }, application.id);
+        return;
       }
+
+      await apiClient.iterateComponents(async (component) => {
+        const componentEntity = await jobState.addEntity(
+          createComponentEntity(component),
+        );
+
+        await jobState.addRelationship(
+          createApplicationComponentRelationship({
+            applicationEntity,
+            componentEntity,
+          }),
+        );
+      }, application.id);
     },
   );
 }
 
 export async function buildComponentCveRelationship({
   jobState,
-  instance,
   logger,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
   await jobState.iterateEntities(
     { _type: Entities.COMPONENT._type },
     async (componentEntity) => {
       const component = getRawData<WhitehatComponent>(componentEntity);
-
-      if (!component)
+      if (!component) {
         logger.warn(
-          `Can not get raw data for component entity: ${componentEntity._key}`,
+          { _key: componentEntity._key },
+          'Could not get raw data for component entity',
         );
-      else {
-        if (component.cves.length > 0)
-          for (const { name } of component.cves)
-            await jobState.addRelationship(
-              createComponentCveMappedRelationship({
-                componentEntity,
-                cve: name.toLowerCase(),
-              }),
-            );
+        return;
+      }
+
+      if (component.cves.length > 0) {
+        for (const { name } of component.cves) {
+          await jobState.addRelationship(
+            createComponentCveMappedRelationship({
+              componentEntity,
+              cve: name.toLowerCase(),
+            }),
+          );
+        }
       }
     },
   );

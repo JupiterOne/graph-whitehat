@@ -4,9 +4,9 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
+
 import generateKey from '../../../utils/generateKey';
 import { createAPIClient } from '../../client';
-
 import { IntegrationConfig } from '../../config';
 import { WhitehatGroup } from '../../types';
 import {
@@ -51,22 +51,25 @@ export async function buildUserGroup({
     { _type: Entities.GROUP._type },
     async (groupEntity) => {
       const group = getRawData<WhitehatGroup>(groupEntity);
-      if (!group)
+      if (!group) {
         logger.warn(
-          `Can not get raw data for group entity: ${groupEntity._key}`,
+          { _key: groupEntity._key },
+          'Could not get raw data for group entity',
         );
-      else {
-        await apiClient.iterateUsers(async (user) => {
-          const userEntity = await jobState.findEntity(
-            generateKey(Entities.USER._type, user.id),
-          );
-
-          if (userEntity)
-            await jobState.addRelationship(
-              createGroupUserRelationship({ userEntity, groupEntity }),
-            );
-        }, `&groupID=${group.id}`);
+        return;
       }
+
+      await apiClient.iterateUsers(async (user) => {
+        const userEntity = await jobState.findEntity(
+          generateKey(Entities.USER._type, user.id),
+        );
+
+        if (userEntity) {
+          await jobState.addRelationship(
+            createGroupUserRelationship({ userEntity, groupEntity }),
+          );
+        }
+      }, `&groupID=${group.id}`);
     },
   );
 }

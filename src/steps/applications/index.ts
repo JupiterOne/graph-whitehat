@@ -3,8 +3,8 @@ import {
   IntegrationStepExecutionContext,
   getRawData,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatApplication, WhitehatAsset } from '../../types';
 import { Steps, Entities, Relationships } from '../constants';
@@ -26,26 +26,28 @@ export async function fetchApplications({
     { _type: Entities.ASSET._type },
     async (assetEntity) => {
       const asset = getRawData<WhitehatAsset>(assetEntity);
-
-      if (!asset)
+      if (!asset) {
         logger.warn(
-          `Can not get raw data for asset entity: ${assetEntity._key}`,
+          { _key: assetEntity._key },
+          'Could not get raw data for asset entity',
         );
-      else {
-        if (asset.type === 'application') {
-          const application = await apiClient.getApplication(asset.subID);
+        return;
+      }
 
-          if (application) {
-            const applicationEntity = await jobState.addEntity(
-              createApplicationEntity(application),
-            );
-            await jobState.addRelationship(
-              createApplicationAssetRelationship({
-                assetEntity,
-                applicationEntity,
-              }),
-            );
-          }
+      if (asset.type === 'application') {
+        const application = await apiClient.getApplication(asset.subID);
+
+        if (application) {
+          const applicationEntity = await jobState.addEntity(
+            createApplicationEntity(application),
+          );
+
+          await jobState.addRelationship(
+            createApplicationAssetRelationship({
+              assetEntity,
+              applicationEntity,
+            }),
+          );
         }
       }
     },
@@ -64,23 +66,25 @@ export async function fetchCodebases({
     async (applicationEntity) => {
       const application = getRawData<WhitehatApplication>(applicationEntity);
 
-      if (!application)
+      if (!application) {
         logger.warn(
-          `Can not get raw data for application entity: ${applicationEntity._key}`,
+          { _key: applicationEntity._key },
+          'Could not get raw data for application entity',
         );
-      else {
-        const codebases = await apiClient.getCodebases(application.id);
-        for (const codebase of codebases.collection) {
-          const codebaseEntity = await jobState.addEntity(
-            createCodebaseEntity(codebase),
-          );
-          await jobState.addRelationship(
-            createApplicationCodebaseRelationship({
-              applicationEntity,
-              codebaseEntity,
-            }),
-          );
-        }
+        return;
+      }
+
+      const codebases = await apiClient.getCodebases(application.id);
+      for (const codebase of codebases.collection) {
+        const codebaseEntity = await jobState.addEntity(
+          createCodebaseEntity(codebase),
+        );
+        await jobState.addRelationship(
+          createApplicationCodebaseRelationship({
+            applicationEntity,
+            codebaseEntity,
+          }),
+        );
       }
     },
   );

@@ -2,8 +2,8 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { Steps, Entities, ACCOUNT_ENTITY_KEY } from '../constants';
 import { createAccountEntity } from './converter';

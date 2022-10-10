@@ -4,8 +4,8 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatApplication, WhitehatSite } from '../../types';
 import {
@@ -37,7 +37,8 @@ export async function fetchApplicationAssessments({
 
       if (!application) {
         logger.warn(
-          `Can not get raw data for entity: ${applicationEntity._key}`,
+          { _key: applicationEntity._key },
+          'Could not get raw data for application entity',
         );
         return;
       }
@@ -79,7 +80,10 @@ export async function fetchSiteAssessments({
       const site = getRawData<WhitehatSite>(siteEntity);
 
       if (!site) {
-        logger.warn(`Can not get raw data for entity: ${siteEntity._key}`);
+        logger.warn(
+          { _key: siteEntity._key },
+          'Could not get raw data for site entity',
+        );
         return;
       }
 

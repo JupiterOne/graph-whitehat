@@ -3,9 +3,9 @@ import {
   IntegrationStep,
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
+
 import generateKey from '../../../utils/generateKey';
 import { createAPIClient } from '../../client';
-
 import { IntegrationConfig } from '../../config';
 import { WhitehatFinding } from '../../types';
 import {
@@ -30,8 +30,9 @@ export async function fetchFindings({
 
   await apiClient.iterateFindings(async (finding) => {
     const findingEntity = createFindingEntity(finding);
-    if (!(await jobState.hasKey(findingEntity._key)))
+    if (!(await jobState.hasKey(findingEntity._key))) {
       await jobState.addEntity(findingEntity);
+    }
 
     const type = finding.asset.type;
     if (type === 'application') {
@@ -46,8 +47,9 @@ export async function fetchFindings({
             findingEntity,
           });
 
-        if (!(await jobState.hasKey(findingApplicationRelationship._key)))
+        if (!(await jobState.hasKey(findingApplicationRelationship._key))) {
           await jobState.addRelationship(findingApplicationRelationship);
+        }
       }
     } else if (type === 'site') {
       const siteEntity = await jobState.findEntity(
@@ -60,8 +62,9 @@ export async function fetchFindings({
           findingEntity,
         });
 
-        if (!(await jobState.hasKey(findingSiteRelationship._key)))
+        if (!(await jobState.hasKey(findingSiteRelationship._key))) {
           await jobState.addRelationship(findingSiteRelationship);
+        }
       }
     }
   }, `&fields=likelihoodRating%2CimpactRating%2CcvssV3`);
@@ -75,22 +78,26 @@ export async function buildFindingScanRelationship({
     { _type: Entities.FINDING._type },
     async (findingEntity) => {
       const finding = getRawData<WhitehatFinding>(findingEntity);
-
       if (!finding) {
-        logger.warn(`Can not get raw data for entity ${findingEntity._key}`);
-      } else {
-        const scanEntity = await jobState.findEntity(
-          generateKey(Entities.ASSESSMENT._type, finding.asset.subID),
+        logger.warn(
+          { _key: findingEntity._key },
+          'Could not get raw data for finding entity',
         );
+        return;
+      }
 
-        if (scanEntity) {
-          const findingScanRelationship = createScanFindingRelationship({
-            scanEntity,
-            findingEntity,
-          });
+      const scanEntity = await jobState.findEntity(
+        generateKey(Entities.ASSESSMENT._type, finding.asset.subID),
+      );
 
-          if (!(await jobState.hasKey(findingScanRelationship._key)))
-            await jobState.addRelationship(findingScanRelationship);
+      if (scanEntity) {
+        const findingScanRelationship = createScanFindingRelationship({
+          scanEntity,
+          findingEntity,
+        });
+
+        if (!(await jobState.hasKey(findingScanRelationship._key))) {
+          await jobState.addRelationship(findingScanRelationship);
         }
       }
     },
@@ -105,22 +112,25 @@ export async function buildFindingCweRelationship({
     { _type: Entities.FINDING._type },
     async (findingEntity) => {
       const finding = getRawData<WhitehatFinding>(findingEntity);
-
       if (!finding) {
-        logger.warn(`Can not get raw data for entity ${findingEntity._key}`);
-      } else {
-        const subTypeTags = finding.subTypeTags;
-        if (subTypeTags?.length > 0) {
-          for (const tag of subTypeTags) {
-            const lowerCaseTag = tag.toLowerCase();
-            if (lowerCaseTag.includes('cwe')) {
-              await jobState.addRelationship(
-                createFindingCweMappedRelationship({
-                  findingEntity,
-                  cwe: lowerCaseTag,
-                }),
-              );
-            }
+        logger.warn(
+          { _key: findingEntity._key },
+          'Could not get raw data for finding entity',
+        );
+        return;
+      }
+
+      const subTypeTags = finding.subTypeTags;
+      if (subTypeTags?.length > 0) {
+        for (const tag of subTypeTags) {
+          const lowerCaseTag = tag.toLowerCase();
+          if (lowerCaseTag.includes('cwe')) {
+            await jobState.addRelationship(
+              createFindingCweMappedRelationship({
+                findingEntity,
+                cwe: lowerCaseTag,
+              }),
+            );
           }
         }
       }

@@ -3,8 +3,8 @@ import {
   IntegrationStepExecutionContext,
   getRawData,
 } from '@jupiterone/integration-sdk-core';
-import { createAPIClient } from '../../client';
 
+import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatSite } from '../../types';
 import { Steps, Entities, Relationships } from '../constants';
@@ -24,22 +24,23 @@ export async function fetchEndpoints({
     { _type: Entities.SITE._type },
     async (siteEntity) => {
       const site = getRawData<WhitehatSite>(siteEntity);
-
       if (!site) {
-        logger.warn(`Can not get raw data for entity ${siteEntity._key}`);
+        logger.warn(
+          { _key: siteEntity._key },
+          'Could not get raw data for site entity',
+        );
         return;
-      } else {
-        const endpoint = await apiClient.getEndpoint(site.id);
+      }
 
-        if (Object.keys(endpoint).length > 0) {
-          const endpointEntity = await jobState.addEntity(
-            createEndpointEntity(endpoint),
-          );
+      const endpoint = await apiClient.getEndpoint(site.id);
+      if (Object.keys(endpoint).length > 0) {
+        const endpointEntity = await jobState.addEntity(
+          createEndpointEntity(endpoint),
+        );
 
-          await jobState.addRelationship(
-            createSiteEndpointRelationship({ siteEntity, endpointEntity }),
-          );
-        }
+        await jobState.addRelationship(
+          createSiteEndpointRelationship({ siteEntity, endpointEntity }),
+        );
       }
     },
   );
