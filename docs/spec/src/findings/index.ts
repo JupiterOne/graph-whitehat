@@ -8,8 +8,8 @@ import { IntegrationConfig } from '../../../../src/config';
 export const findingSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: n/a
-     * PATTERN: Singleton
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/findings
+     * PATTERN: Fetch Entities
      */
     id: 'fetch-findings',
     name: 'Fetch Findings',

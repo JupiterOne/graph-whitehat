@@ -4,7 +4,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const accountSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: n/a
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/whoami
      * PATTERN: Singleton
      */
     id: 'fetch-account',

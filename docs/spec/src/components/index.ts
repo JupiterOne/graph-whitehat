@@ -8,7 +8,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const componentSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/application/${appId}/framework
      * PATTERN: Fetch Entities
      */
     id: 'fetch-components',
@@ -33,7 +33,7 @@ export const componentSpec: StepSpec<IntegrationConfig>[] = [
   },
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: n/a
      * PATTERN: Fetch Entities
      */
     id: 'build-component-cve-relationship',

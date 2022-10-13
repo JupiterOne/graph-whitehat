@@ -4,7 +4,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const scanSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/sourceApplications/${appId}/scans
      * PATTERN: Fetch Entities
      */
     id: 'fetch-application-assessments',
@@ -35,7 +35,7 @@ export const scanSpec: StepSpec<IntegrationConfig>[] = [
   },
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/site/${siteId}/last_completed_scans
      * PATTERN: Fetch Entities
      */
     id: 'fetch-site-assessments',

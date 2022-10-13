@@ -4,8 +4,8 @@ import { IntegrationConfig } from '../../../../src/config';
 export const userSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: n/a
-     * PATTERN: Singleton
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/users
+     * PATTERN: Fetch Entities
      */
     id: 'fetch-users',
     name: 'Fetch Users',

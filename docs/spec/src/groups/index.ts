@@ -4,8 +4,8 @@ import { IntegrationConfig } from '../../../../src/config';
 export const groupSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: n/a
-     * PATTERN: Singleton
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/groups
+     * PATTERN: Fetch Entities
      */
     id: 'fetch-groups',
     name: 'Fetch Groups',
@@ -29,8 +29,8 @@ export const groupSpec: StepSpec<IntegrationConfig>[] = [
   },
   {
     /**
-     * ENDPOINT: n/a
-     * PATTERN: Singleton
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/users
+     * PATTERN: Fetch Entities
      */
     id: 'build-user-group-relationship',
     name: 'Build User and Group Relationship',

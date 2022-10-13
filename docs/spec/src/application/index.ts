@@ -4,7 +4,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const applicationSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://sentinel.whitehatsec.com/api/application/${applicationId}
      * PATTERN: Fetch Entities
      */
     id: 'fetch-applications',
