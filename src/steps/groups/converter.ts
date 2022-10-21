@@ -22,7 +22,7 @@ export function createGroupEntity(data: WhitehatGroup): Entity {
         id: data.id.toString(),
         name: data.name,
         description: data.description,
-        createdOn: parseTimePropertyValue(data.created * 1000),
+        createdOn: parseTimePropertyValue(data.created, 'sec'),
       },
     },
   });

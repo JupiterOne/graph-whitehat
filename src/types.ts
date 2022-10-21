@@ -200,7 +200,7 @@ export interface WhitehatFinding {
   retestStatus: string;
   firstOpened: string;
   opened: string;
-  closed: number;
+  closed: string;
   lastModified: string;
   tags: string[];
   zeroDayTags: string[];
