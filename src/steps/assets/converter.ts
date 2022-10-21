@@ -4,6 +4,7 @@ import {
   Relationship,
   createDirectRelationship,
   RelationshipClass,
+  parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 
 import generateKey from '../../../utils/generateKey';
@@ -31,10 +32,10 @@ export function createAssetEntity(data: WhitehatAsset): Entity {
         customAssetId: data.customAssetID,
         scheduleName: data.scheduleName,
         scheduleTimeZone: data.scheduleTimeZone,
-        createdOn: data.creationT,
+        createdOn: parseTimePropertyValue(data.creationT * 1000),
         lang: data.lang,
         averageLinesScanned: data.averageLinesScanned,
-        lastScanOn: data.lastScanDateT,
+        lastScanOn: parseTimePropertyValue(data.lastScanDateT * 1000),
         scanStatus: data.scanStatus,
         isWhiteHatEnabled: data.isWhiteHatEnabled,
         activeUser: data.activeUser,

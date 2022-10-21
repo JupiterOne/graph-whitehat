@@ -2,6 +2,7 @@ import {
   createDirectRelationship,
   createIntegrationEntity,
   Entity,
+  parseTimePropertyValue,
   Relationship,
   RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
@@ -21,7 +22,7 @@ export function createGroupEntity(data: WhitehatGroup): Entity {
         id: data.id.toString(),
         name: data.name,
         description: data.description,
-        createdOn: data.created,
+        createdOn: parseTimePropertyValue(data.created * 1000),
       },
     },
   });
