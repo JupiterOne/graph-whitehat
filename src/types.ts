@@ -1,78 +1,296 @@
-import {
-  EntityFromIntegration,
-  RelationshipFromIntegration,
-  RelationshipMapping,
-} from "@jupiterone/jupiter-managed-integration-sdk";
-
-export interface WhitehatIntegrationInstanceConfig {
-  whitehatApiKey: string;
+export interface WhitehatCurrentUser {
+  id: number;
+  username: string;
+  isAdmin: boolean;
+  privileges: string[];
+  hasJumped: boolean;
+  primaryClient: number;
+  allSitesAdmin: number[];
+  hasAssets: boolean;
 }
 
-export interface AccountEntity extends EntityFromIntegration {
+export interface WhitehatUser {
+  id: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  lastLogin: number;
+  status: string;
+  createdDate: number;
+  createdBy: string;
+  jobTitle: string;
+  mobile: string;
+  phone: string;
+  dataPrivacy: boolean;
+  timezone: string;
+  vulnEmails: boolean;
+  emailFrequency: { daily: boolean; weekly: boolean; monthly: boolean };
+}
+
+export interface WhitehatRole {
+  id: number;
   name: string;
 }
 
-export interface ServiceEntityMap {
-  [scanType: string]: ServiceEntity;
-}
-
-export interface ServiceEntity extends EntityFromIntegration {
-  category: string;
+export interface WhitehatSite {
+  id: number;
+  clientID: number;
   name: string;
+  organization: string;
+  abbreviation: string;
+  hostname: string;
+  associatedHostname: string;
+  industry: string;
+  weight: number;
+  speed: number;
+  usesSatellite: boolean;
 }
 
-export interface VulnerabilityEntityMap {
-  [id: string]: VulnerabilityEntity;
+export interface WhitehatApplication {
+  autoremediation: number;
+  files: { extension: string; count: number }[];
+  open_vuln_count: string;
+  vulns_found_by_engine: number;
+  asset_scan_status: string;
+  last_scan_duration: number;
+  status: string;
+  line_of_code: string;
+  client_id: number;
+  has_schedule: number;
+  last_scan_completed: string;
+  percentage_of_lines_sent_to_whitehat: number;
+  label: string;
+  id: number;
+  file_size_scanned: string;
+  language: string;
+  created_t: string;
+  service_level: string;
+  app_full_scan_enabled: number;
+  is_mobile_bla: number;
+  href: string;
+  is_mobile: number;
 }
 
-export interface VulnerabilityEntity extends EntityFromIntegration {
-  id: string;
-  category: string;
+export interface WhitehatRoleResponse {
+  collection: WhitehatRole[];
+}
+
+export interface WhitehatAsset {
+  id: number;
+  subID: number;
   name: string;
-  scanType: string;
-  createdOn: number;
+  type: string;
+  location: string[];
+  serviceLevel: string;
+  clientRatingMethod: string;
+  phase: string;
+  status: string;
+  customAssetID: string;
+  tags: string[];
+  scheduleName: string;
+  scheduleTimeZone: string;
+  creationT: number;
+  lang: string;
+  averageLinesScanned: number;
+  lastScanDateT: number;
+  scanStatus: string;
+  isWhiteHatEnabled: boolean;
+  activeUser: boolean;
+  keepUnreachableFindingsOpen: { Bool: boolean; Valid: boolean };
 }
 
-export interface FindingEntityMap {
-  [vulnerabilityClass: string]: FindingEntity[];
-}
-
-export interface FindingEntity extends EntityFromIntegration {
+export interface WhitehatGroup {
+  id: number;
   name: string;
+  description: string;
+  created: number;
+}
 
-  targets: string;
+export interface WhitehatAppScan {
+  id: number;
+  tag: string;
+  filename: string;
+  requestedBy: number;
+  username: string;
+  uploadedOn: string;
+  completedOn: string;
+  applicationSize: number;
+  linesOfCode: number;
+  appID: number;
+  assetID: number;
+  status: string;
+  engineConf: {
+    binary_exclusions: string;
+    binary_inclusions: string;
+    exclude_directories: string;
+    exclude_directories_console: string;
+  };
+  instanceID: number;
+}
 
-  open: boolean;
+export interface WhitehatSiteScan {
+  has_running_scan: number;
+  total: number;
+  slot_id: string;
+  collection: {
+    is_non_auth: number;
+    end_date: string;
+    cred_group_name: string;
+    auth_schema_id: number;
+    scan_instance_id: string;
+  }[];
+  href: string;
+}
 
-  cvss: string;
-  likelihood: number;
-  impact: number;
-  risk: string;
+export interface WhitehatEventSubscriptions {
+  subscriptionGroupType: string;
+  allEventsSubscribed: boolean;
+  subscriptionGroupEvents: {
+    value: number;
+    description: string;
+    subscribed: boolean;
+  }[];
+}
 
-  createdOn: number;
-  foundDate: number;
-  modifiedDate: number;
-  resolvedDate: number | null;
-
+export interface WhitehatEventSubscriptionsResponse {
+  page: {
+    totalCount: number;
+  };
+  collection: WhitehatEventSubscriptions[];
+}
+export interface WhitehatFinding {
+  id: number;
+  asset: {
+    id: number;
+    name: string;
+    type: string;
+    rating: string;
+    serviceLevel: number;
+    subID: number;
+    clientID: number;
+    status: boolean;
+    customPolicyID: number;
+  };
+  class: {
+    id: number;
+    name: string;
+    shortName: string;
+    defaultRisk: number;
+    retired: boolean;
+    hasApplications: boolean;
+    hasSites: boolean;
+  };
   location: string;
+  foundRevision: string;
+  status: string;
+  nonAcceptedStatus: string;
+  severity: string;
+  threat: number;
+  impact: number;
+  impactRating: string;
+  likelihood: number;
+  likelihoodRating: string;
+  risk: number;
+  customRisk: number;
+  customAccepted: boolean;
+  reason: string;
+  hasInstanceLevelCustomization: boolean;
+  hasInstanceLevelCVSSCustomization: boolean;
+  lastRetested: number;
+  retestStatus: string;
+  firstOpened: string;
+  opened: string;
+  closed: string;
+  lastModified: string;
+  tags: string[];
+  zeroDayTags: string[];
+  cveTags: string[];
+  subTypeTags: string[];
+  directRemediationAvailable: boolean;
+  unreachable: boolean;
+  attackVectorsCount: number;
+  notesCount: number;
+  isAccessible: boolean;
+  outOfScopeReasons: string[];
+  attackVectors: number[];
+  verificationStatus: string;
+  manual: boolean;
+  cvssV3: {
+    score: number;
+    vector: {
+      [key: string]: string;
+    };
+  };
 }
 
-export interface CVEEntityMap {
-  [id: string]: CVEEntity[];
+export interface WhitehatCodebaseResponse {
+  collection: WhitehatCodebase[];
+  type: string;
+  href: string;
 }
 
-export interface CVEEntity extends EntityFromIntegration {
-  name: string;
-  references: string[];
+export interface WhitehatCodebase {
+  file_name: string;
+  file_tree_json: string;
+  repository_type: string;
+  id: string;
+  certificate: string;
+  auth_type: string;
+  exclude_dirs: string[];
+  href: string;
+  username: string;
+  repository_revision: string;
+  label: string;
+  repository_url: string;
 }
 
-export type AccountServiceRelationship = RelationshipFromIntegration;
+export interface WhitehatAppliance {
+  id: number;
+  label: string;
+  type: string;
+  status: string;
+  ubuntuVersion: number;
+  clientID: number;
+  cloudRequestProgress: number;
+  associatedAssetCount: number;
+  averageLinesOfCode: number;
+  migrationStatus: number;
+  satelliteID: number;
+  serverConfAssetCount: number;
+}
 
-export type ServiceVulnerabilityRelationship = RelationshipFromIntegration;
+export interface WhitehatEndpoint {
+  id: number;
+  createdTime: number;
+  edited: string;
+  editedVersion: number;
+  imported: string;
+  siteID: string;
+  siteLabel: string;
+  swaggerVersion: string;
+  userID: number;
+}
 
-export type VulnerabilityFindingRelationship = RelationshipFromIntegration;
-
-export interface VulnerabilityCVERelationship
-  extends RelationshipFromIntegration {
-  _mapping: RelationshipMapping;
+export interface WhitehatComponent {
+  source_type_name: string;
+  latest_version: string;
+  cves: {
+    name: string;
+    url: string;
+  }[];
+  current_version: string;
+  framework_pretty_name: string;
+  versions_behind: number;
+  source_file_name: string;
+  licenses: [
+    {
+      pretty_name: string;
+      url: string;
+      name: string;
+    },
+  ];
+  framework_id: number;
+  app_id: number;
+  framework_name: string;
+  application_name: string;
 }

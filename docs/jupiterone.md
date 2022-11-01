@@ -1,4 +1,4 @@
-# Integration with JupiterOne
+# WhiteHat Security Integration with JupiterOne
 
 ## WhiteHat Security + JupiterOne Integration Benefits
 
@@ -60,35 +60,77 @@ password and copy the displayed API Key.
 4. Click the **trash can** icon.
 5. Click the **Remove** button to delete the integration.
 
+<!-- {J1_DOCUMENTATION_MARKER_START} -->
+<!--
+********************************************************************************
+NOTE: ALL OF THE FOLLOWING DOCUMENTATION IS GENERATED USING THE
+"j1-integration document" COMMAND. DO NOT EDIT BY HAND! PLEASE SEE THE DEVELOPER
+DOCUMENTATION FOR USAGE INFORMATION:
+
+https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
+********************************************************************************
+-->
+
 ## Data Model
 
 ### Entities
 
-The following entity resources are ingested when the integration runs:
+The following entities are created:
 
-| Whitehat Entity Resource | \_type : \_class of the Entity             |
-| ------------------------ | ------------------------------------------ |
-| Account                  | `whitehat_account` : `Account`             |
-| Scan Type                | `whitehat_scan` : `Service`                |
-| CVE                      | `cve` : `Vulnerability`                    |
-| Vulnerability            | `whitehat_vulnerability` : `Vulnerability` |
-| Finding                  | `whitehat_finding` : `Finding`             |
+| Resources                          | Entity `_type`         | Entity `_class`       |
+| ---------------------------------- | ---------------------- | --------------------- |
+| Account                            | `whitehat_account`     | `Account`             |
+| Appliance                          | `whitehat_appliance`   | `Gateway`             |
+| Application and Mobile Application | `whitehat_application` | `Application`         |
+| Assessment                         | `whitehat_assessment`  | `Assessment`          |
+| Asset                              | `whitehat_asset`       | `Application`         |
+| Codebase                           | `whitehat_codebase`    | `CodeRepo`            |
+| Component                          | `whitehat_component`   | `CodeModule`          |
+| Endpoint                           | `web_app_endpoint`     | `ApplicationEndpoint` |
+| Finding                            | `whitehat_finding`     | `Finding`             |
+| Group                              | `whitehat_group`       | `UserGroup`           |
+| Role                               | `whitehat_role`        | `AccessRole`          |
+| Scan Type                          | `whitehat_scan`        | `Service`             |
+| Site                               | `web_app_domain`       | `Application`, `Host` |
+| User                               | `whitehat_user`        | `User`                |
 
 ### Relationships
 
-The following relationships are created/mapped:
+The following relationships are created:
 
-#### Intra-Instance
+| Source Entity `_type`  | Relationship `_class` | Target Entity `_type`  |
+| ---------------------- | --------------------- | ---------------------- |
+| `web_app_domain`       | **HAS**               | `web_app_endpoint`     |
+| `web_app_domain`       | **HAS**               | `whitehat_assessment`  |
+| `web_app_domain`       | **HAS**               | `whitehat_finding`     |
+| `whitehat_account`     | **HAS**               | `whitehat_appliance`   |
+| `whitehat_account`     | **HAS**               | `whitehat_asset`       |
+| `whitehat_account`     | **HAS**               | `whitehat_group`       |
+| `whitehat_account`     | **HAS**               | `whitehat_scan`        |
+| `whitehat_account`     | **HAS**               | `whitehat_user`        |
+| `whitehat_application` | **HAS**               | `whitehat_assessment`  |
+| `whitehat_application` | **HAS**               | `whitehat_codebase`    |
+| `whitehat_application` | **HAS**               | `whitehat_component`   |
+| `whitehat_application` | **HAS**               | `whitehat_finding`     |
+| `whitehat_assessment`  | **IDENTIFIED**        | `whitehat_finding`     |
+| `whitehat_asset`       | **HAS**               | `whitehat_application` |
+| `whitehat_asset`       | **HAS**               | `web_app_domain`       |
+| `whitehat_group`       | **HAS**               | `whitehat_user`        |
+| `whitehat_scan`        | **PERFORMED**         | `whitehat_assessment`  |
+| `whitehat_user`        | **ASSIGNED**          | `whitehat_role`        |
 
-| From                     | Type           | To                       |
-| ------------------------ | -------------- | ------------------------ |
-| `whitehat_account`       | **HAS**        | `whitehat_scan`          |
-| `whitehat_scan`          | **IDENTIFIED** | `whitehat_vulnerability` |
-| `whitehat_vulnerability` | **EXPLOITS**   | `cwe`                    |
-| `whitehat_finding`       | **IS**         | `whitehat_vulnerability` |
+### Mapped Relationships
 
-#### Extra-Instance / Mapped
+The following mapped relationships are created:
 
-| From                           | Type        | To                                                                                                                                                                                                 |
-| ------------------------------ | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CodeRepo/Project/Application` | **HAS/HAD** | `whitehat_finding` <br> Note: This is mapped automatically only when the name of the Whitehat Application the finding belongs to matches the name of a CodeRepo/Project/Application in JupiterOne. |
+| Source Entity `_type` | Relationship `_class` | Target Entity `_type` | Direction |
+| --------------------- | --------------------- | --------------------- | --------- |
+| `whitehat_component`  | **HAS**               | `*cve*`               | FORWARD   |
+| `whitehat_finding`    | **EXPLOITS**          | `*cwe*`               | FORWARD   |
+
+<!--
+********************************************************************************
+END OF GENERATED DOCUMENTATION AFTER BELOW MARKER
+********************************************************************************
+-->
+<!-- {J1_DOCUMENTATION_MARKER_END} -->

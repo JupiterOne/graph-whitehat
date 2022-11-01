@@ -1,6 +1,4 @@
-# JupiterOne Managed Integration for Whitehat
-
-[![Build Status](https://travis-ci.org/JupiterOne/graph-whitehat.svg?branch=master)](https://travis-ci.org/JupiterOne/graph-whitehat)
+# JupiterOne Managed Integration
 
 A JupiterOne integration ingests information such as configurations and other
 metadata about digital and physical assets belonging to an organization. The
@@ -146,3 +144,16 @@ yarn test
 Managed integrations are deployed into the JupiterOne infrastructure by staff
 engineers using internal projects that declare a dependency on the open source
 integration NPM package. The package will be published by the JupiterOne team.
+
+#### Publishing to NPM
+
+Create a PR with changes and request review. Once approved, the branch will be
+merged into `main`. An administrator of the GitHub project should:
+
+1. Pull the latest from `main`
+1. Determine the new semantic version number
+1. Create the version and tag with `yarn version [--major] [--minor] [--patch]`
+1. Push the commit and tag with `git push --follow-tags`
+
+That's it! Travis will deploy the necessary bits to NPM. Manual deployment is
+possible of course, just be certain to follow the `yarn build` road.
