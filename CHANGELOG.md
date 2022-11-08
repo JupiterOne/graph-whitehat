@@ -12,7 +12,7 @@ and this project adheres to
 
 ### Added
 
-The following entities are created:
+The following entities are **now** created:
 
 | Resources                          | Entity `_type`         | Entity `_class`       |
 | ---------------------------------- | ---------------------- | --------------------- |
@@ -31,7 +31,7 @@ The following entities are created:
 | Site                               | `web_app_domain`       | `Application`, `Host` |
 | User                               | `whitehat_user`        | `User`                |
 
-The following relationships are created:
+The following relationships are **now** created:
 
 | Source Entity `_type`  | Relationship `_class` | Target Entity `_type`  |
 | ---------------------- | --------------------- | ---------------------- |
