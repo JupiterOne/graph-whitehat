@@ -6,7 +6,7 @@ import {
   RelationshipClass,
   parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
-import generateKey from '../../../utils/generateKey';
+import generateKey from '../../utils/generateKey';
 import { WhitehatApplication, WhitehatCodebase } from '../../types';
 
 import { Entities } from '../constants';
