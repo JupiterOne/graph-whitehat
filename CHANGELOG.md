@@ -8,6 +8,13 @@ and this project adheres to
 
 ## [Unreleased]
 
+## 2.0.4 - 2022-11-09
+
+### Fixed
+
+- NPM package was bundled incorrectly causing issues. Version 2.0.3 should not
+  be used!
+
 ## 2.0.3 - 2022-11-01
 
 ### Added
