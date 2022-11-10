@@ -6,3 +6,5 @@ dist/
 .eslintcache
 tsconfig.tsbuildinfo
 .npmrc
+deploy/terraform/data/integrationGraphSchema.json
+tmp/

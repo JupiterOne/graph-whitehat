@@ -5,7 +5,7 @@ import {
   createDirectRelationship,
   RelationshipClass,
 } from '@jupiterone/integration-sdk-core';
-import generateKey from '../../../utils/generateKey';
+import generateKey from '../../utils/generateKey';
 import { WhitehatSite } from '../../types';
 
 import { Entities } from '../constants';

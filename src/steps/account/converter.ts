@@ -3,7 +3,7 @@ import {
   Entity,
 } from '@jupiterone/integration-sdk-core';
 
-import generateKey from '../../../utils/generateKey';
+import generateKey from '../../utils/generateKey';
 import { WhitehatCurrentUser } from '../../types';
 import { Entities } from '../constants';
 

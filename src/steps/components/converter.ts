@@ -6,7 +6,7 @@ import {
   RelationshipClass,
   createMappedRelationship,
 } from '@jupiterone/integration-sdk-core';
-import generateKey from '../../../utils/generateKey';
+import generateKey from '../../utils/generateKey';
 import { WhitehatComponent } from '../../types';
 
 import { Entities, mappedRelationships } from '../constants';

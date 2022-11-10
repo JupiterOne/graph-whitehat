@@ -5,7 +5,7 @@ import {
   IntegrationStepExecutionContext,
 } from '@jupiterone/integration-sdk-core';
 
-import generateKey from '../../../utils/generateKey';
+import generateKey from '../../utils/generateKey';
 import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { WhitehatGroup } from '../../types';
